@@ -1,0 +1,258 @@
+			MIGHTY SOCKETS
+			==============
+
+Sockets are indeed the window to networking and networking drives the
+whole world some way or other, that's why the name "Mighty Sockets".
+
+In simple terms, a socket is an endpoint of communication. And a
+connection is represented by a socket pair. Remember, not all
+communication is connection oriented. So, you can have a single socket
+also doing most of the job for you (e.g. UDP sockets). A process deals
+with the socket in the same way as it deals with files. We'll see more
+of this similarity in coming sections.
+
+
+1. HOW DO WE CREATE THEM?
+   ---------------------
+
+As always we have a system call to do the job for us :) 
+
+	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
+	//socket(2) prototype: socket(int domain, int type, int protocol)
+
+What it says is - give me a socket of domain INET (AF_INET is for 
+Address Famiy - INET) and of type SOCK_STREAM (stream socket) and 
+default protocol that goes with streaming sockets (it's TCP).
+
+Socket system call does a lot of things behind the scene. It creates
+socket structure in kernel memory. This structure is then filled by
+various protocol independent data and other data depending upon the 
+address family, type and protocol.
+
+
+2. NAMING THE SOCKET:
+   -----------------
+
+Naming or addressing of a socket is very important. This is how data is
+ supposed to reach right process.
+
+How sockets are addressed depends upon the domain of the socket. For
+example, an INET domain socket is identified by ip address and port
+combined. Of course, IP address is required if you want to reach a
+machine. IP address is used by inernet protocol to route the data from
+one machine to other machine. Port is required by kernel to route the
+packet to the right process.  
+
+So as you see naming of a socket is important. But, you don't have to do
+this yourself always.  If a specific port number is not required by an
+application process (as is the case for most of the client), kernel may
+ assign a port to the socket internally. However, if you are looking for 
+a specific port as in case of a server, you need to do get it through 
+'bind(2)' system call:
+
+	int bind(int sockfd, struct sockaddr *my_addr, socklen_t
+							addrlen);
+"sockaddr" structure has fields like socket family (AF_INET), IP address
+(for IP) and Port. struct sockaddr is a generic structure. Generally we
+fill information in a more specific structure like sockaddr_in for
+domain INET. 
+
+This way we bind the socket to specific address, or in other way we give
+our socket a name. As mentioned earlier, this is required generally only in
+case of server, when we want a specific port for ourselves.
+
+
+3. CONNECTION ESTABLISHMENT:
+   ------------------------ 
+
+Connection establishment is required for all connection oriented
+protocols (like TCP).  In TCP terminology, a connection is established
+using three-way handshake. A  SYN packet is sent from one side
+(generally client) and when that packet arrives, receiving end
+(generally server) sends a [SYN,ACK] and connection is complete, when
+server receives ACK from client.  
+
+		active		passive
+		|      SYN	|
+		|-------------->|
+		|   [SYN, ACK]	|
+		|<-------------	|
+		|      ACK	|
+		|-------------->|
+		|		|
+
+There are 2 possible ways to establish a connection: Whether you want to
+initiate the connection or wait for the connection. If you choose to
+wait for a connection (e.g.  you are a server), you do a 'passive open'
+and if you want initiate the connection (e.g. you are client and want
+something done from server), you do an 'active open'.
+
+
+3.1 PASSIVE OPEN:
+    ------------
+
+If you are doing passive open, you are waiting for the connection.
+Waiting for a connection is also called 'listening'. Your server starts
+listening when it executes:
+
+	listen(backlog);
+
+"The 'listen' function converts an unconnected socket into a passive
+socket, indicating that the kernel should accept incoming connection
+requests directed to this socket."
+
+For a given listening socket kernel maintains 2 queues:
+
+i) An 'incomplete conneciton queue', which contains an entry for all
+unacknowledged connections. Basically, I have received the SYN from the
+other machine, sent the [SYN, ACK] and waiting for ACK from other side.
+These sockets are in SYN_RCVD state.
+
+ii) A 'completed connection queue', which contains an entry for each
+machine with whom the TCP three-way handshake is completed. These
+sockets are in ESTABLISHED state.
+
+Sum of the both queues cannot exceed backlog. 
+
+		 _______________________
+		|     	 _______	|
+		|	|Server	|	|
+		|	|_______|	|
+listening <-----|------	(*.1200,*.*)	|
+socket		|_______________________|
+			fig. 1
+
+Above figure, represents a server listening at port 1200. No connection
+has been established yet.
+
+
+Fetching Connections:
+--------------------
+Connections, if any, are still with the TCP. To return a connection to
+the application
+
+	int new_sock = accept(int orig_sock, struct sockaddr* addr, 
+   					socklen_t *addrlen);
+
+'accept' is called by an application to return the next completed
+connection from the front of the completed connection queue. If the
+completed connection queue is empty the process is put to sleep
+(assuming the default of a blocking socket).
+
+If 'accept' is successful, its return value is a brand new descriptor
+that was automatically created by kernel. This new descriptor refers to
+the TCP connection with the client. Listening socket remains untouched.
+Client socket address and length information is filled by accept. Server
+may or may not use them. 
+
+So you have 2 sockets now, one listening and other already connected.
+You may close orig_sock, if you have no use for it now (eg. don't want
+to continue listening).  
+
+	 _______________________	 _______________________			
+	|     	 _______	|	|	 _______	|
+	|	|Server	|	|	|----->	|Client	|	|
+	|	|_______|	|      /|	|_______|	|
+listening----->(*.1200,*.*)	|     /	|(3.209.127.100:1500,	|
+socket	|	 _______	|    /	| 3.209.129.47:1200)	|
+	|	|Server	|	|   /	|_______________________|	
+	|	|_______|	|  /		3.209.127.100
+	| (3.209.129.47:1200,<--|-/
+	| 3.209.127.100:1500)	|
+	|_______________________|
+		3.209.129.47
+				Figure 2	
+
+
+3.2 ACTIVE OPEN:
+    -----------
+
+When you initiate a connection, you are doing an 'active open'. You just
+need to call 'connect(2)' to initiate a connection.
+
+	int connect(int sockfd, const struct sockaddr *serv_addr,
+						socklen_t addrlen);
+
+This initiates the process of connection (3-way handshake in TCP
+teminology) and returns only when connection is complete (or something
+goes wrong with your luck like signals and all). If not able to
+establish connection, it returns -1 and sets errno.
+
+
+When you call connect, kernel implicitly allocates a port to the socket
+(naming of socket).  Fig. 2 has a client connected to the server. Port
+1500 is allocated to the client implicitly by kernel.
+
+
+4. DATA TRANSFER:
+   -------------
+
+Now next obvious step will be to get some work done with this socket. 
+
+Mechanism for sending and receiving data is actually very simple. You
+have to just read, write the socket descriptor like file descriptor.
+But, what happens behind the scenes is more important (like always ;)).
+A lot can be said by sockets. But, I'll just talk about packets 
+demultiplexing, which is handled by TCP-IP.
+
+
+5. DEMULTIPLEXING:
+   --------------
+
+Ok, so now you have a connection. Now client sends some data to server,
+say a request for a web page in case of web client. How does it reach
+the server? Packet carries the information like source address (ip and
+port) and destination address.  IP does all the work to make the packet
+reach destination machine using dst IP address. 
+
+But now what, we have 2 sockets on the server with the same name ie.
+with same ports (remember one socket listening and other connected to
+the client). And there can be many more sockets with the same name
+depending upon the number of clients connected at a time. Here comes TCP
+to rescue. TCP demultiplexes incoming segments for us. 
+
+TCP cannot demulitplex incoming segments by looking at just the
+destination port number. TCP must look at all 4 elements in the socket
+pair to determine which endpoint receives the arriving segment.	
+						
+	 _______________________	 _______________________			
+	|     	 _______	|	|	 _______	|
+	|	|Server	|	|     --|----->	|Client	|	|
+	|	|_______|	|    /	|	|_______|	|
+	|	(*.1200,*.*)	|   /	|(3.209.127.100:1500,	|
+	|	 _______	|  /	| 3.209.129.47:1200)	|
+	|	|Server	|  <----|-/	|	 _______	|	
+	|	|__c_1__|	|     --|----->	|Client	|	|
+	| (3.209.129.47:1200,   |    /	|	|_______|	|
+	| 3.209.127.100:1500)	|   /	|(3.209.127.100:1501,	|
+	|	 _______	|  /	| 3.209.129.47:1200)	|
+	|	|Server	|  <----|-/	|_______________________|	
+	|	|__c_2__|	|	      3.209.127.100
+	| (3.209.129.47:1200,   |
+	| 3.209.127.100:1501)	|
+	|		 	|
+	|_______________________|
+	      3.209.129.47
+				Figure 3
+
+In figure 3, we have 2 connections open between server machine and client
+machine. It's a case of concurrent servers (most typical way to handle
+clients). In this case, when a new connection arrives, server forks out
+and lets his child handle the connection and himself keeps listening for
+new connections.
+
+Here we have 3 sockets with the same local port (1200). If a segment
+arrives from 3.209.127.100 port 1500 destined for port 1200, it is
+delivered to first child. If a segment arrives from 3.209.127.100 port
+1501 destined for 3.209.129.47 port 1200, it is delivered to the second
+child. All other segments destined for port 1200 are delivered to the
+original server with the listening socket.
+
+There is a lot more to talk about sockets. But, there is a lot more 
+documentation too. This is just an attempt to explain what most other
+documents miss to explain. 
+-----------------------------------------------------------------------
+Author: Manu Garg 
+http://www.manugarg.com
+manugarg at gmail.com

@@ -1,0 +1,715 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>manu's pages - Sysenter Based System Call Mechanism in Linux 2.6</title>
+
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style type="text/css">
+  #g_title p, #g_footer p, #g_description p {
+    margin: 0;
+  }
+  /*
+
+  	-- -- -- -- -- -- --
+  	Browser Fixes
+  	-- -- -- -- -- -- --
+  	
+  	This file uses CSS filtering methods to fix various
+  	layout bugs.
+
+  	Each of the following three imported files is a 
+  	separate, browser-specific CSS file that keeps all 
+  	hacks out of the main style sheet.
+  	
+  	Over time, as supporting these browsers no longer
+  	remains a priority, cleaning up the hacks is as
+  	easy as deleting the @import statement below, or
+  	simply no longer linking this file from the HTML.
+  	
+  */
+
+  /* 
+    fix ie6 "peekaboo bug" using the "holly hack". 
+    Note, this style only gets applied to ie6
+  */
+  * html .wrapper {
+    height: 0.1%;
+  }
+
+  /* 
+   * IE5 mac - overrides the IE/Win hack 
+   */
+
+  /*\*//*/
+
+  * html #threecolumn div {
+  	height: auto;
+  }
+
+  /**/
+
+
+  /* 
+   * IE5/Win-specific CSS -ensures #container wraps all content on window resize
+   */
+
+  @media tty {
+   i{content:"\";/*" "*/}} * html #container { height: 1%; } /*";}
+  }/* */
+  /* Styling for editable elements. Eventually, this will be part of the style. */
+  .editable {
+    border: 1px dashed blue;
+  }
+  
+  #footer {
+    clear: both;
+  }
+  
+  /* Extra divs hidden by default. The custom CSS can override this though */
+  #extraDiv1, #extraDiv2, #extraDiv3, #extraDiv4, #extraDiv5, #extraDiv6 {
+    display: none;
+  }
+  
+  a img,:link img,:visited img {border: none;}
+
+
+  body {
+    text-align: center;
+  }
+  #container {
+    width: 718px;
+    text-align: left;
+    margin: 0 auto;
+  }
+  /** BEGIN CUSTOM SKIN **/
+  /*
+
+  	-- -- -- -- -- -- --
+  	Base CSS
+  	-- -- -- -- -- -- --
+  	
+  	This file simply removes default styling on most HTML elements in 
+  	order to reduce the need to later override them.
+  	
+  */
+
+  h1,h2,h3,h4,h5,h6,pre,code,p {font-size: 1em;}
+  dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input {margin: 0; padding: 0;}
+  a img,:link img,:visited img {border: none;}
+  address {font-style: normal;}/*
+
+  	-- -- -- -- -- -- --
+  	Type Scheme: Deco
+  	-- -- -- -- -- -- --
+  	
+  */
+
+  body {
+  	font: 76% Verdana, sans-serif;
+  }	
+
+  h1, h2, h3, h4, h5, h6, p.description {
+  	font-family: "Trebuchet MS", Trebuchet, sans-serif;
+  }
+  h1 {
+  	font-size: 3em;
+  	font-weight: bold;
+  	letter-spacing: 2px;
+  }
+  h2 {
+  	font-size: 2em;
+  	font-weight: normal;
+  }
+  h3 {
+  	font-size: 1.5em;
+  }
+  h4 {
+  	font-size: 1.2em;
+  	letter-spacing: 0.2em;
+  }
+  h5 {
+  	font-size: 1.2em;
+  }
+  h6 {
+  	font-size: 1em;
+  	font-weight: bold;
+  }
+
+  p, td {
+  	line-height: 1.8em;
+  }
+  code, kbd {
+  	font-size: 1.25em;
+  }/*
+
+  	-- -- -- -- -- -- --
+  	STYLE: Micro
+  	-- -- -- -- -- -- --
+
+  */
+
+
+
+
+  /* ie6win */
+
+  /* IE/Win fixes for various layouts
+  ----------------------------------------------- */
+  * html #onecolumn #header {
+  	margin-right: -3px;
+  }
+  * html #onecolumn #header,
+  * html #twocolumn-left #header, * html #twocolumn-right #header,
+  * html #twocolumn-liquid-left #header, * html #twocolumn-liquid-right #header {
+  	padding-bottom: 1px;
+  }
+  * html #twocolumn-left #main-content, * html #twocolumn-right #main-content {
+  	width: 459px;
+  }
+  * html #threecolumn #main-content {
+  	width: 409px;
+  }
+
+  /* ie5mac */
+
+  /*\*//*/
+  /* Undoing IE/Win fixes
+  ----------------------------------------------- */
+  * html #onecolumn #header {
+  	margin-right: 0;
+  }
+  * html #twocolumn-left #header, * html #twocolumn-right #header,
+  * html #twocolumn-liquid-left #header, * html #twocolumn-liquid-right #header {
+  	padding-bottom: 0;
+  }
+  * html #twocolumn-left #main-content, * html #twocolumn-right #main-content {
+  	width: 479px;
+  }
+  * html #threecolumn #main-content {
+  	width: 429px;
+  }
+  /**/
+
+  @media tty {
+   i{content:"\";/*" "*/}} td { font-size: 0.8em; } /*";}
+  }/* */
+
+
+
+  /* Basic HTML style
+  ----------------------------------------------- */
+  body {
+  	font: 76% "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
+  	color: #000;
+  	background: #fff;
+  	margin: 0;
+  	padding: 0;
+  }
+  blockquote {
+  	margin: 1em 2em;
+  	font-style: italic;
+  }
+  caption {
+  	font-weight: bold;
+  	color: #444;
+  	background: #ccc;
+  	border-bottom: 0;
+  	padding: 0.3em 1em;
+  }
+  dd {
+  	margin: 1em 2em;
+  }
+  dl {
+  	margin: 2em 0;
+  }
+  dt {
+  	font-weight: bold;
+  }
+  hr {
+  	margin: 2em 0;
+  	color: #C7C7C7;
+  	background: #C7C7C7;
+  	border-color: #C7C7C7;
+  	border-style: none;
+  	height: 1px;
+  }
+  li {
+  	margin: 1em 0;
+  }
+  table {
+  	border: solid 1px #ccc;
+  }
+  td {
+  	vertical-align: top;
+  	padding: 0.5em;
+  }
+  th {
+  	text-align: left;
+  	color: #fff;
+  	background: #777;
+  	padding: 0.5em;
+  }
+  ol, ul {
+  	margin: 2em 0;
+  	padding-left: 1em;
+  }
+
+
+
+  /* Nested HTML elements, and basic classes
+  ----------------------------------------------- */
+  ol li {
+  	list-style-type: decimal;
+  	margin-left: 2em;
+  }
+  ul li {
+  	margin-left: 2em;
+  	list-style-type: square;
+  }
+  td p {
+  	margin-top: 0;
+  }
+
+
+
+  /* Set the stage with main layout tweaks
+  ----------------------------------------------- */
+  #container {
+  	border: solid 7px #999;
+  	border-left: 0;
+  	border-right: 0;
+  	padding-top: 1px;
+  }
+  #header {
+  	color: #04172D;
+  	border-top: solid 3px #777;
+  	padding: 0;
+  	margin: 0 0 1.5em 0;
+  }
+  #main-content .wrapper {
+  	margin: 0;
+  }
+  .description {
+  	font: normal 1em "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
+  	color: #444;
+  	background: #C7C7C7;
+  	padding: 3px 25px 2.2em 25px;
+  	margin: 0;
+  	line-height: 1;
+  }
+  #footer {
+  	clear: both;
+  	color: #999;
+  	padding: 0 1em 1em 1em;
+  	border-bottom: solid 3px #777;
+  	margin-bottom: 1px;
+  }
+
+
+  /* Content area offset
+  ----------------------------------------------- */
+  #main-content .wrapper {
+  	padding: 0 25px;
+  }
+
+  #main-content td p {
+  	margin: 0 0 1em 0;
+  }
+
+
+
+  /* Custom font definitions
+  ----------------------------------------------- */
+  p {
+  	margin: 1em 0;
+  	line-height: 1.5;
+  }
+  h1,h2,h3,h4,h5,h6 {
+  	font-family: "Trebuchet MS", arial, sans-serif;
+  }
+  h1 {
+  	color: #B2B2B2;
+  	font-size: 2.4em;
+  	letter-spacing: 0.2em;
+  	font-weight: normal;
+  	padding: 1em 25px 0 25px;
+  }
+  h2 {
+  	margin: 0 0 0.5em 0;
+  	color: #777;
+  	font-size: 1.4em;
+  	font-weight: normal;
+  	border-bottom: double 3px #C7C7C7;
+  	padding: 0 0 0.4em 0;
+  }
+  h3 {
+  	font-size: 1.2em;
+  	background: #eee;
+  	border: dotted 1px #C7C7C7;
+  	padding: 0.2em;
+  }
+  h4 {
+  	font-size: 1.2em;
+  	padding: 0 0 0.2em 0;
+  	margin: 0.6em 0 0 0.4em;
+  	color: #777;
+  }
+  h5 {
+  	border-bottom: dotted 1px #C7C7C7;
+  }
+  h6 {
+  	color: #777;
+  	border-left: solid 1.2em #777;
+  	padding-left: 0.6em;
+  }
+
+  a:link {
+  	color: #9db2df;
+  }
+  a:hover {
+    	text-decoration: none;
+  	border-bottom: 1px dotted #bb242d;
+  	background-color: #e0e0e0;
+   }
+
+
+  /* Sidebar
+  ----------------------------------------------- */
+  #sidebar h3, #sidebar-alternate h3 {
+  	margin: 0;
+  	color: #777;
+  	background: none;
+  	font-size: 1.4em;
+  	font-weight: normal;
+  	border: none;
+  	padding: 0;
+  }
+
+  #sidebar blockquote, #sidebar blockquote p,
+  #sidebar-alternate blockquote, #sidebar-alternate blockquote p {
+  	margin-left: 0;
+  	margin-right: 0;
+  }
+  #sidebar blockquote {
+  	margin: 1em 0;
+  	padding: 0;
+  }
+  #adsense {
+  	text-align: center;
+  }
+
+
+
+  .editable {
+  	border: dashed 1px #c33;
+  }
+
+
+
+
+  /* Tweaks for Two-column Right layout
+  ----------------------------------------------- */
+  #twocolumn-right #sidebar .wrapper {
+  	margin: 0 10px;
+  }
+
+
+
+  /* Tweaks for Two-column Left layout
+  ----------------------------------------------- */
+  #twocolumn-left #sidebar .wrapper {
+  	margin: 0 10px;
+  }
+
+
+  /* Tweaks for Three-column layout
+  ----------------------------------------------- */
+  #threecolumn #sidebar .wrapper {
+  	margin: 0 10px;
+  }
+  #threecolumn #sidebar-alternate .wrapper {
+  	margin: 0 10px;
+  }
+  /*
+
+  	-- -- -- -- -- -- --
+  	COLOR SCHEME: Ghost
+  	-- -- -- -- -- -- --
+
+  */
+
+
+  /* Basic HTML style
+  ----------------------------------------------- */
+  a:link {
+  	color: #000;
+  }
+  a:visited {
+  	color: #333;
+  }
+  a:hover {
+  	color: #666;
+  }
+  body {
+  	color: #444;
+  	background: #fff;
+  }
+  caption {
+  	color: inherit;
+  	background: #eee;
+  }
+  hr {
+  	color: #eee;
+  	background: #eee;
+  	border-color: #eee;
+  }
+  table {
+  	border-color: #e6e6e6;
+  }
+  th {
+  	color: #444;
+  	background: #ccc;
+  }
+
+
+
+  /* Set the stage with main layout tweaks
+  ----------------------------------------------- */
+  #container {
+  	background-color: #fff;
+  	border-color: #fff;
+  }
+  #header {
+  	color: #888;
+  	border-top-color: #fff;
+  }
+  .description {
+  	color: #666;
+  	background: #e6e6e6;
+  }
+  #footer {
+  	color: #888;
+  	border-bottom-color: #fff;
+  }
+
+
+
+  /* Custom font definitions
+  ----------------------------------------------- */
+  h1 {
+  	color: #C7C7C7;
+  }
+  h2 {
+  	color: #888;
+  	border-bottom-color: #eee;
+  }
+  h3 {
+  	color: #666;
+  	background: #eee;
+  	border-color: #ddd;
+  }
+  h4 {
+  	border-bottom-color: #888;
+  	color: #444;
+  }
+  h5 {
+  	color: #888;
+  	border-bottom-color: #C7C7C7;
+  }
+  h6 {
+  	color: #ccc;
+  	border-left-color: #888;
+  }
+
+
+
+
+
+  /* Sidebar
+  ----------------------------------------------- */
+  #sidebar h3, #sidebar-alternate h3 {
+  	color: #888;
+  	background: none;
+  }
+
+  #sidebar a:link {
+  	color: #666;
+  }
+  #sidebar a:visited {
+  	color: #444;
+  }
+  #sidebar a:hover {
+  	color: #999;
+  }
+  /** END CUSTOM SKIN **/
+  </style><!-- Hack to avoid flash of unstyled content in IE -->
+
+  
+  <script> </script></head><body id="onecolumn">
+<!-- Start of Google Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-79661-4']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+  })();
+
+</script>
+<!-- End of Google Analytics Code -->
+  <div id="container">
+    <div class="wrapper">
+      <div id="header">
+        <div class="wrapper">
+          <h1 id="page-title"><div id="g_title">Sysenter Based System Call Mechanism in Linux 2.6</div></h1>
+          <div style="clear: both;"></div>
+          <p class="description"></p><div id="g_description">&nbsp;</div>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+      <!-- /editable --><!-- /wrapper --><!-- /header -->
+      <div id="main-content">
+        <div class="wrapper">
+          <div class="content-item"><div id="g_body"><p>Starting with version 2.5, linux kernel introduced a new system call
+entry mechanism on Pentium II+ processors. Due to performance issues on
+Pentium IV processors with existing software interrupt method, an
+alternative system call entry mechanism was implemented using
+SYSENTER/SYSEXIT instructions available on Pentium II+ processors. This
+article explores this new mechanism. Discussion is limited to x86
+architecture and all source code listings are based on linux kernel
+2.6.15.6.</p><h2 class="title" style="clear: both;">1. What are system calls?<br></h2><p>System calls provide userland processes a way to request services from
+the kernel. What kind of services? Services which are managed by
+operating system like storage, memory, network, process management etc.
+For example if a user process wants to read a file, it will have to
+make 'open' and 'read' system calls. Generally system calls are not
+called by processes directly. C library provides an interface to all
+system calls.</p><h2 class="title" style="clear: both;">2.&nbsp;What happens in a system call?&nbsp;</h2><p>A kernel code snippet is run on request of a user process. This code
+runs in ring 0 (with current privilege level -CPL- 0), which is the
+highest level of privilege in x86 architecture. All user processes run
+in ring 3 (CPL 3). So, to implement system call mechanism, what we need
+is 1) a way to call ring 0 code from ring 3 and 2) some kernel code to
+service the request.</p><h2 class="title" style="clear: both;">3.&nbsp;Good old way of doing it</h2><p>Until some time back, linux used to
+implement system calls on all x86 platforms using software interrupts.
+To execute a system call, user process will copy desired system call
+number to %eax and will execute 'int 0x80'. This will generate
+interrupt 0x80 and an interrupt service routine will be called. For
+interrupt 0x80, this routine is an "all system calls handling" routine.
+This routine will execute in ring 0. This routine, as defined in the
+file <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code>, will save the current state and call appropriate system call handler based on the value in %eax.</p><h2 class="title" style="clear: both;"><a name="d0e33"></a></h2><h2 class="title" style="clear: both;">4.&nbsp;New shiny way of doing it</h2><p>It <a href="http://lkml.org/lkml/2002/12/9/13" target="_top">was found out</a>
+that this software interrupt method was much slower on Pentium IV
+processors. To solve this issue, Linus implemented an alternative
+system call mechanism to take advantage of SYSENTER/SYSEXIT
+instructions provided by all Pentium II+ processors. Before going
+further with this new way of doing it, let's make ourselves more
+familiar with these instructions.</p><h3 class="title">4.1.&nbsp;SYSENTER/SYSEXIT instructions:</h3><p>Let's look at the authorized source, Intel manual itself. Intel manual says:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+SYSENTER instruction is part of the "Fast System Call" facility
+introduced on the Pentium® II processor. The SYSENTER instruction is
+optimized to provide the maximum performance for transitions to
+protection ring 0 (CPL = 0). The SYSENTER instruction sets the
+following registers according to values specified by the operating
+system in certain model-specific registers.</p><div class="itemizedlist"><ul type="disc"><li><p>CS register set to the value of (SYSENTER_CS_MSR)</p></li><li><p>EIP register set to the value of (SYSENTER_EIP_MSR)</p></li><li><p>SS register set to the sum of (8 plus the value in SYSENTER_CS_MSR)</p></li><li><p>ESP register set to the value of (SYSENTER_ESP_MSR)</p></li></ul></div></blockquote></div><p>Looks like processor is trying to help us. Let's look at SYSEXIT also very quickly:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+SYSEXIT instruction is part of the "Fast System Call" facility
+introduced on the Pentium® II processor. The SYSEXIT instruction is
+optimized to provide the maximum performance for transitions to
+protection ring 3 (CPL = 3) from protection ring 0 (CPL = 0). The
+SYSEXIT instruction sets the following registers according to values
+specified by the operating system in certain model-specific or general
+purpose registers.</p><div class="itemizedlist"><ul type="disc"><li><p>CS register set to the sum of (16 plus the value in SYSENTER_CS_MSR)</p></li><li><p>EIP register set to the value contained in the EDX register</p></li><li><p>SS register set to the sum of (24 plus the value in SYSENTER_CS_MSR)</p></li><li><p>ESP register set to the value contained in the ECX register</p></li></ul></div></blockquote></div><p>SYSENTER_CS_MSR,
+SYSENTER_ESP_MSR, and SYSENTER_EIP_MSR are not really names of the
+registers. Intel just defines the address of these registers as:</p><div class="literallayout"><p>SYSENTER_CS_MSR&nbsp;&nbsp;&nbsp;174h<br>
+SYSENTER_ESP_MSR&nbsp;175h<br>
+SYSENTER_EIP_MSR&nbsp;&nbsp;176h</p></div><p> In linux these registers are named as:</p><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">/usr/src/linux/include/asm/msr.h:<br>    101 #define MSR_IA32_SYSENTER_CS            0x174<br>    102 #define MSR_IA32_SYSENTER_ESP           0x175<br>    103 #define MSR_IA32_SYSENTER_EIP           0x176</font></pre><pre style="font-family: courier new,monospace;" class="programlisting">&nbsp;</pre><h3 class="title">4.2.&nbsp;How does linux 2.6 uses these instructions?</h3><div class="orderedlist"><ol type="1"><li><p>Linux sets up these registers during initialization itself.</p><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">/usr/src/linux/arch/i386/kernel/sysenter.c:<br>     36         wrmsr(MSR_IA32_SYSENTER_CS, __KERNEL_CS, 0);<br>     37         wrmsr(MSR_IA32_SYSENTER_ESP, tss-&gt;esp1, 0);<br>     38         wrmsr(MSR_IA32_SYSENTER_EIP, (unsigned long) sysenter_entry, 0);</font></pre><p>Please
+note that 'tss' refers to the Task State Segment (TSS) and tss-&gt;esp1
+thus points to the kernel mode stack. [4] explains the use of TSS in
+linux as:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+x86 architecture includes a specific segment type called the Task State
+Segment (TSS), to store hardware contexts. Although Linux doesn't use
+hardware context switches, it is nonetheless forced to set up a TSS for
+each distinct CPU in the system. This is done for two main reasons:</p><p>- When an 80 x 86 CPU switches from User Mode to Kernel Mode, it fetches the address of the Kernel Mode stack from the TSS.</p><p>-
+When a User Mode process attempts to access an I/O port by means of an
+in or out instruction, the CPU may need to access an I/O Permission
+Bitmap stored in the TSS to verify whether the process is allowed to
+address the port.</p></blockquote></div><p>So during initialization
+kernel sets up these registers such that after SYSENTER instruction,
+ESP is set to kernel mode stack and EIP is set to sysenter_entry.</p></li><li><p>Kernel
+also setups system call entry/exit points for user processes. Kernel
+creates a single page in the memory and attaches it to all processes'
+address space when they are loaded into memory. This page contains the
+actual implementation of the system call entry/exit mechanism.
+Definition of this page can be found in the file <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code>. Kernel calls this page virtual dynamic shared object (vdso). Existence of this page can be confirmed by looking at <code class="filename">cat <code class="filename">/proc/`pid`/maps</code></code>:</p><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">slax ~ # cat /proc/self/maps<br>08048000-0804c000 r-xp 00000000 07:00 13         /bin/cat<br>0804c000-0804d000 rwxp 00003000 07:00 13         /bin/cat<br>0804d000-0806e000 rwxp 0804d000 00:00 0          [heap]<br>b7ea0000-b7ea1000 rwxp b7ea0000 00:00 0<br>b7ea1000-b7fca000 r-xp 00000000 07:03 1840       /lib/tls/libc-2.3.6.so<br>b7fca000-b7fcb000 r-xp 00128000 07:03 1840       /lib/tls/libc-2.3.6.so<br>b7fcb000-b7fce000 rwxp 00129000 07:03 1840       /lib/tls/libc-2.3.6.so<br>b7fce000-b7fd1000 rwxp b7fce000 00:00 0<br>b7fe7000-b7ffd000 r-xp 00000000 07:03 1730       /lib/ld-2.3.6.so<br>b7ffd000-b7fff000 rwxp 00015000 07:03 1730       /lib/ld-2.3.6.so<br>bffe7000-bfffd000 rwxp bffe7000 00:00 0          [stack]<br>ffffe000-fffff000 ---p 00000000 00:00 0          [vdso]</font></pre><p>For binaries using shared libraries, this page can be seen using ldd also:</p><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">slax ~ # ldd /bin/ls<br>        linux-gate.so.1 =&gt;  (0xffffe000)<br>        librt.so.1 =&gt; /lib/tls/librt.so.1 (0xb7f5f000)<br>        ...</font></pre><p>Observe linux-gate.so.1. This is no physical file. Content of this vdso can be seen as follows:</p><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">==&gt; dd if=/proc/self/mem of=linux-gate.dso bs=4096 skip=1048574 count=1<br>1+0 records in<br>1+0 records out<br><br>==&gt; objdump -d --start-address=0xffffe400 --stop-address=0xffffe414 linux-gate.dso<br>ffffe400 &lt;__kernel_vsyscall&gt;:<br>ffffe400:       51                      push   %ecx<br>ffffe401:       52                      push   %edx<br>ffffe402:       55                      push   %ebp<br>ffffe403:       89 e5                   mov    %esp,%ebp<br>ffffe405:       0f 34                   sysenter <br>...<br>ffffe40d:       90                      nop    <br>ffffe40e:       eb f3                   jmp    ffffe403 &lt;__kernel_vsyscall+0x3&gt;<br>ffffe410:       5d                      pop    %ebp<br>ffffe411:       5a                      pop    %edx<br>ffffe412:       59                      pop    %ecx<br>ffffe413:       c3                      ret    </font></pre><p>In all listings, ... stands for omitted irrelevant code.</p></li><li><p><span class="emphasis"><em>Initiation:</em></span>
+Userland processes (or C library on their behalf) call
+__kernel_vsyscall to execute system calls. Address of __kernel_vsyscall
+is not fixed. Kernel passes this address to userland processes using
+AT_SYSINFO elf parameter. AT_ elf parameters, a.k.a. elf auxiliary
+vectors, are loaded on the process stack at the time of startup,
+alongwith the process arguments and the environment variables. Look at
+[1] for more information on Elf auxiliary vectors.</p><p>After moving
+to this address, registers %ecx, %edx and %ebp are saved on the user
+stack and %esp is copied to %ebp before executing sysenter. This %ebp
+later helps kernel in restoring userland stack back. After executing
+sysenter instruction, processor starts execution at <span class="emphasis"><em>sysenter_entry</em></span>. sysenter_entry is defined in <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code> as: (See my comments in [ ])</p><pre class="programlisting">    <font size="4"><span style="font-family: courier new,monospace;">  <font size="2">179 ENTRY(sysenter_entry)</font></span><font size="2"><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    180         movl TSS_sysenter_esp0(%esp),%esp</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    181 sysenter_past_esp:</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    182         sti</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    183         pushl $(__USER_DS)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    184         pushl %ebp			[%ebp contains userland %esp]</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    185         pushfl</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    186         pushl $(__USER_CS)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    187         pushl $SYSENTER_RETURN		[%userland return addr]</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    188</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">		....</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    201         pushl %eax			</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    202         SAVE_ALL			[pushes registers on to stack]</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    203         GET_THREAD_INFO(%ebp)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    204</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    205         /* Note, _TIF_SECCOMP is bit number 8, and so it needs testw and not testb */</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    206         testw $(_TIF_SYSCALL_EMU|_TIF_SYSCALL_TRACE|_TIF_SECCOMP|_TIF_SYSCALL_AUDIT),</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">                                                                             TI_flags(%ebp)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    207         jnz syscall_trace_entry</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    208         cmpl $(nr_syscalls), %eax</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    209         jae syscall_badsys</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    210         call *sys_call_table(,%eax,4)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">    211         movl %eax,EAX(%esp)</span><br style="font-family: courier new,monospace;"><span style="font-family: courier new,monospace;">		......</span></font></font></pre></li><li><p>Inside sysenter_entry: between line 183 and 202, kernel is saving the current state by pushing register values on to the stack.</p><p>Observe that $SYSENTER_RETURN is the userland return address as defined inside <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code> and %ebp contains userland ESP as %esp was copied to %ebp before calling sysenter.</p></li><li><p>After
+saving the state, kernel validates the system call number stored in
+%eax. Finally appropriate system call is called using instruction:</p><p style="font-family: courier new,monospace;"><font size="2">210 call *sys_call_table(,%eax,4)</font></p><p>This is very much similar to old way.</p></li><li><p>After system call is complete, processor resumes execution at line 211. Looking further in sysenter_entry definition:</p><pre style="font-family: courier new,monospace;" class="programlisting">    <font size="2">210         call *sys_call_table(,%eax,4)<br>    211         movl %eax,EAX(%esp)<br>    212         cli<br>    213         movl TI_flags(%ebp), %ecx<br>    214         testw $_TIF_ALLWORK_MASK, %cx<br>    215         jne syscall_exit_work<br>    216 /* if something modifies registers it must also disable sysexit */<br>    217         movl EIP(%esp), %edx			(EIP is 0x28)<br>    218         movl OLDESP(%esp), %ecx			(OLD ESP is 0x34)<br>    219         xorl %ebp,%ebp<br>    220         sti<br>    221         sysexit</font></pre></li><li><p>Copies
+value in %eax to stack. Userland ESP and return address (to-be EIP) are
+copied from kernel stack to %edx and %ecx respectively. Observe that
+the userland return address, $SYSENTER_RETURN was pushed on to stack in
+line 187. After that 0x28 bytes have been pushed on to the stack.
+That's why 0x28(%esp) points to $SYSENTER_RETURN.</p></li><li><p>After
+that SYSEXIT instruction is executed. As we know from previous section,
+sysexit copies value in %edx to EIP and value in %ecx to ESP. sysexit
+transfers processor back to ring 3 and processor resumes execution in
+userland.</p></li></ol></div><h2 class="title" style="clear: both;">5.&nbsp;Some Code</h2><pre style="font-family: courier new,monospace;" class="programlisting"><font size="2">#include &lt;stdio.h&gt;<br><br>int pid;<br><br>int main() {<br>        __asm__(<br>                "movl $20, %eax    \n"<br>                "call *%gs:0x10    \n"   /* offset 0x10 is not fixed across the systems */<br>                "movl %eax, pid    \n"<br>        );<br>        printf("pid is %d\n", pid);<br>        return 0;</font></pre><pre class="programlisting"><font style="font-family: courier new,monospace;" size="2">}</font><br></pre><p>This
+does the getpid() system call (__NR_getpid is 20) using
+__kernel_vsyscall instead of int 0x80. Why %gs:0x10? Parsing process
+stack to find out AT_SYSINFO's value can be a cumbersome task. So, when
+libc.so (C library) is loaded, it copies the value of AT_SYSINFO from
+the process stack to the TCB (Thread Control Block). Segment register
+%gs refers to the TCB. </p><p>Please note that the offset 0x10 is not
+fixed across the systems. I found it out for my system using GDB. A
+system independent way to find out AT_SYSINFO is given in [1]. </p><p>Note:
+This example is taken from <a
+  href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html"
+  target="_top">http://www.win.tue.nl/~aeb/linux/lk/lk-4.html</a> after little
+modification to make it work on my system.</p><h2 class="title" style="clear:
+  both;"><a name="d0e184"></a></h2><h2 class="title" style="clear:
+  both;">6.&nbsp;References</h2><p>Here are some references that helped me
+understand this.</p><div class="orderedlist"><ol compact="compact"
+    type="1"><li><p><a
+      href="aboutelfauxiliaryvectors.html" target="_top">About Elf auxiliary vectors</a> By Manu Garg</p></li><li><p><a href="http://www.trilithium.com/johan/2005/08/linux-gate/" target="_top">What is linux-gate.so.1?</a> By Johan Peterson</p></li><li><p><a href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html" target="_top">This Linux kernel: System Calls</a> By Andries Brouwer</p></li><li><p>Understanding the Linux Kernel, By Daniel P. Bovet, Marco Cesati</p></li><li><p>Linux Kernel source code&nbsp;&nbsp;</p></li></ol></div></div></div>
+          <div style="clear: both;"></div>
+        </div>
+      </div>
+      <!-- /wrapper --><!-- /main-content -->
+      <div id="footer"><div class="wrapper">
+        <hr>
+        <p></p><div id="g_footer"><p>Copyright 2006 Manu Garg http://www.manugarg.com<br> </p></div>
+        <div style="clear: both;"></div>
+      </div></div>
+      <!-- /wrapper --><!-- /footer -->
+    </div>
+  </div>
+<!-- /wrapper --><!-- /container -->
+
+<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div>
+<div id="extraDiv3"><span></span></div><div id="extraDiv4"><span></span></div>
+<div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
+<!-- Start of StatCounter Code -->
+<script type="text/javascript">
+  var sc_project=825718; 
+  var sc_invisible=0; 
+  var sc_partition=6; 
+  var sc_security="ec98e57b"; 
+</script>
+
+<script type="text/javascript"
+  src="http://www.statcounter.com/counter/counter_xhtml.js"></script><noscript><div
+    class="statcounter"><a class="statcounter"
+      href="http://www.statcounter.com/"><img class="statcounter"
+      src="http://c7.statcounter.com/counter.php?sc_project=825718&java=0&security=ec98e57b&invisible=0"
+      alt="blog stats" /></a></div></noscript>
+<!-- End of StatCounter Code -->
+</body></html>

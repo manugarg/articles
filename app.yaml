@@ -1,0 +1,13 @@
+application: manugarg-articles
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /aboutelfauxiliaryvectors
+  script: redirect2html.py
+
+- url: /(.*\.(pdf|ppt|txt|html))
+  static_files: static/\1
+  upload: static/(.*\.(pdf|ppt|txt|html))
+
