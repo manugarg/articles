@@ -1,4 +1,15 @@
 <style type="text/css">
+  #g_title p, #g_footer p, #g_description p {
+    margin: 0;
+  }
+  #footer {
+    clear: both;
+    padding: 0 1em 1em 1em;
+    border-bottom: solid 3px #777;
+    margin-bottom: 1px;
+    color: #888;
+    border-bottom-color: #fff;
+  }
   h3 {
     font-size: 1.5em;
     font-family: "Trebuchet MS", arial, sans-serif;
@@ -26,19 +37,52 @@
   a:hover {
     color: #666;
   }
-
-
+  p {
+    line-height: 1.8em;
+    margin: 1em 0;
+    line-height: 1.5;
+    font-size: 1em;
+  }
+  body {
+    font: 76% "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
+    color: #000;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+  }
 </style>
 
-<h3>Manu's Articles</h3>
+<body>
+
+  <p>This page is an index of my articles and open source projects. -Manu
+  Garg</p>
+<h3>My Articles</h3>
 <p>
 <ul>
-<li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a></li>
-<li><a href="aboutelfauxiliaryvectors.html">About ELF Auxiliary Vectors</a></li>
-<li><a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a></li>
-<li><a href="arp_spoofing.ppt">Sniffing in a Switched Network (ppt)</a></li>
-<li><a href="backup_rsync.html">Backing up Windows machines using rsync and ssh</a></li>
-<li><a href="ssh_tunneling.pdf">Defeating Firewalls : Sneaking Into Office Computers From Home</a></li>
-<li><a href="socket.txt">Mighty Sockets</a></li>
-<li><a href="stack.txt">Procedure Call Sequence in C</a></li>
+  <li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a></li>
+  <li><a href="aboutelfauxiliaryvectors.html">About ELF Auxiliary Vectors</a></li>
+  <li><a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a></li>
+  <li><a href="arp_spoofing.ppt">Sniffing in a Switched Network (ppt)</a></li>
+  <li><a href="backup_rsync.html">Backing up Windows machines using rsync and ssh</a></li>
+  <li><a href="ssh_tunneling.pdf">Defeating Firewalls : Sneaking Into Office Computers From Home</a></li>
+  <li><a href="socket.txt">Mighty Sockets</a></li>
+  <li><a href="stack.txt">Procedure Call Sequence in C</a></li>
 </ul>
+
+<h3>My Projects</h3>
+<p>
+<ul>
+<li><a href="http://code.google.com/p/pacparser">Pacparser - a library to parse
+  proxy auto-configs</a></li>
+<li><a href="http://code.google.com/p/pactester">Pactester - a tool to test
+  proxy auto-configs</a></li>
+<li><a href="http://sourceforge.net/projects/pymailer/">A simple GUI based
+  mailer</a></li>
+</ul>
+
+<div id="footer"><div class="wrapper">
+    <hr>
+    <p></p><div id="g_footer"><p>Copyright 2006 Manu Garg http://www.manugarg.com<br> </p></div>
+    <div style="clear: both;"></div>
+</div></div>
+</body>
