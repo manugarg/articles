@@ -7,6 +7,10 @@ handlers:
 - url: /aboutelfauxiliaryvectors
   script: redirect2html.py
 
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
+
 - url: /(.*\.(pdf|ppt|txt|html))
   static_files: static/\1
   upload: static/(.*\.(pdf|ppt|txt|html))
