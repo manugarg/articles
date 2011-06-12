@@ -1,5 +1,5 @@
 application: manugarg-articles
-version: 1
+version: live
 runtime: python
 api_version: 1
 
