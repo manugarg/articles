@@ -7,7 +7,7 @@ handlers:
 - url: /aboutelfauxiliaryvectors
   script: redirect2html.py
 
-- url: /stack.txt
+- url: /(socket|stack).txt
   script: redirect2html.py
 
 - url: /
