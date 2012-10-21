@@ -4,6 +4,8 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 class RedirectToHtml(webapp.RequestHandler):
   def get(self, url):
+    if url.endswith('.txt'):
+      url = url.replace('.txt', '')
     self.redirect('%s.html' % url)
 
 application = webapp.WSGIApplication([('(.*)', RedirectToHtml),

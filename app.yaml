@@ -1,10 +1,13 @@
 application: manugarg-articles
-version: live-20121021
+version: live-20121022
 runtime: python
 api_version: 1
 
 handlers:
 - url: /aboutelfauxiliaryvectors
+  script: redirect2html.py
+
+- url: /stack.txt
   script: redirect2html.py
 
 - url: /
