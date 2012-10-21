@@ -5,543 +5,55 @@
   <title>About ELF Auxiliary Vectors</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style type="text/css">
-  #g_title p, #g_footer p, #g_description p {
-    margin: 0;
-  }
-  /*
+    body {
+      font: 76% Verdana, sans-serif;
+      color: #444;
+    }
 
-  	-- -- -- -- -- -- --
-  	Browser Fixes
-  	-- -- -- -- -- -- --
-  	
-  	This file uses CSS filtering methods to fix various
-  	layout bugs.
-
-  	Each of the following three imported files is a 
-  	separate, browser-specific CSS file that keeps all 
-  	hacks out of the main style sheet.
-  	
-  	Over time, as supporting these browsers no longer
-  	remains a priority, cleaning up the hacks is as
-  	easy as deleting the @import statement below, or
-  	simply no longer linking this file from the HTML.
-  	
-  */
-
-  /* 
-    fix ie6 "peekaboo bug" using the "holly hack". 
-    Note, this style only gets applied to ie6
-  */
-  * html .wrapper {
-    height: 0.1%;
-  }
-
-  /* 
-   * IE5 mac - overrides the IE/Win hack 
-   */
-
-  /*\*//*/
-
-  * html #threecolumn div {
-  	height: auto;
-  }
-
-  /**/
-
-
-  /* 
-   * IE5/Win-specific CSS -ensures #container wraps all content on window resize
-   */
-
-  @media tty {
-   i{content:"\";/*" "*/}} * html #container { height: 1%; } /*";}
-  }/* */
-  /* Styling for editable elements. Eventually, this will be part of the style. */
-  .editable {
-    border: 1px dashed blue;
-  }
+    p {
+      margin: 1em 0;
+      line-height: 1.5;
+    }
+    
+    h1 {
+      font-size: 2.0em;
+      letter-spacing: 0.1em;
+    }
   
-  #footer {
-    clear: both;
-  }
+    h2 {
+      border-bottom-color: #eee;
+      border-bottom-width: 3px;
+      border-bottom-style: double;
+    }
+
+    pre {
+      font-family: courier new;
+      font-weight: bold;
+      background-color: #FAFAFA;
+    }
+
+    blockquote {
+      margin: 1em 2em;
+      font-style: italic;
+      font-size: 95%;
+    }
+
+    #author {
+      font-size: 95%;
+      float:left;
+      padding: 2px 12px 2px 0px;
+    }
   
-  /* Extra divs hidden by default. The custom CSS can override this though */
-  #extraDiv1, #extraDiv2, #extraDiv3, #extraDiv4, #extraDiv5, #extraDiv6 {
-    display: none;
-  }
-  
-  a img,:link img,:visited img {border: none;}
+    #container {
+      width: 718px;
+      text-align: left;
+      margin: 0 auto;
+    }
+
+    #main-content {
+      padding-top: 22px;
+    }
 
-
-  body {
-    text-align: center;
-  }
-  #container {
-    width: 718px;
-    text-align: left;
-    margin: 0 auto;
-  }
-  /** BEGIN CUSTOM SKIN **/
-  /*
-
-  	-- -- -- -- -- -- --
-  	Base CSS
-  	-- -- -- -- -- -- --
-  	
-  	This file simply removes default styling on most HTML elements in 
-  	order to reduce the need to later override them.
-  	
-  */
-
-  h1,h2,h3,h4,h5,h6,pre,code,p {font-size: 1em;}
-  dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input {margin: 0; padding: 0;}
-  a img,:link img,:visited img {border: none;}
-  address {font-style: normal;}/*
-
-  	-- -- -- -- -- -- --
-  	Type Scheme: Deco
-  	-- -- -- -- -- -- --
-  	
-  */
-
-  body {
-  	font: 76% Verdana, sans-serif;
-  }	
-
-  h1, h2, h3, h4, h5, h6, p.description {
-  	font-family: "Trebuchet MS", Trebuchet, sans-serif;
-  }
-  h1 {
-  	font-size: 3em;
-  	font-weight: bold;
-  	letter-spacing: 2px;
-  }
-  h2 {
-  	font-size: 2em;
-  	font-weight: normal;
-  }
-  h3 {
-  	font-size: 1.5em;
-  }
-  h4 {
-  	font-size: 1.2em;
-  	letter-spacing: 0.2em;
-  }
-  h5 {
-  	font-size: 1.2em;
-  }
-  h6 {
-  	font-size: 1em;
-  	font-weight: bold;
-  }
-
-  p, td {
-  	line-height: 1.8em;
-  }
-  code, kbd {
-  	font-size: 1.25em;
-  }/*
-
-  	-- -- -- -- -- -- --
-  	STYLE: Micro
-  	-- -- -- -- -- -- --
-
-  */
-
-
-
-
-  /* ie6win */
-
-  /* IE/Win fixes for various layouts
-  ----------------------------------------------- */
-  * html #onecolumn #header {
-  	margin-right: -3px;
-  }
-  * html #onecolumn #header,
-  * html #twocolumn-left #header, * html #twocolumn-right #header,
-  * html #twocolumn-liquid-left #header, * html #twocolumn-liquid-right #header {
-  	padding-bottom: 1px;
-  }
-  * html #twocolumn-left #main-content, * html #twocolumn-right #main-content {
-  	width: 459px;
-  }
-  * html #threecolumn #main-content {
-  	width: 409px;
-  }
-
-  /* ie5mac */
-
-  /*\*//*/
-  /* Undoing IE/Win fixes
-  ----------------------------------------------- */
-  * html #onecolumn #header {
-  	margin-right: 0;
-  }
-  * html #twocolumn-left #header, * html #twocolumn-right #header,
-  * html #twocolumn-liquid-left #header, * html #twocolumn-liquid-right #header {
-  	padding-bottom: 0;
-  }
-  * html #twocolumn-left #main-content, * html #twocolumn-right #main-content {
-  	width: 479px;
-  }
-  * html #threecolumn #main-content {
-  	width: 429px;
-  }
-  /**/
-
-  @media tty {
-   i{content:"\";/*" "*/}} td { font-size: 0.8em; } /*";}
-  }/* */
-
-
-
-  /* Basic HTML style
-  ----------------------------------------------- */
-  body {
-  	font: 76% "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
-  	color: #000;
-  	background: #fff;
-  	margin: 0;
-  	padding: 0;
-  }
-  blockquote {
-  	margin: 1em 2em;
-  	font-style: italic;
-  }
-  caption {
-  	font-weight: bold;
-  	color: #444;
-  	background: #ccc;
-  	border-bottom: 0;
-  	padding: 0.3em 1em;
-  }
-  dd {
-  	margin: 1em 2em;
-  }
-  dl {
-  	margin: 2em 0;
-  }
-  dt {
-  	font-weight: bold;
-  }
-  hr {
-  	margin: 2em 0;
-  	color: #C7C7C7;
-  	background: #C7C7C7;
-  	border-color: #C7C7C7;
-  	border-style: none;
-  	height: 1px;
-  }
-  li {
-  	margin: 1em 0;
-  }
-  table {
-  	border: solid 1px #ccc;
-  }
-  td {
-  	vertical-align: top;
-  	padding: 0.5em;
-  }
-  th {
-  	text-align: left;
-  	color: #fff;
-  	background: #777;
-  	padding: 0.5em;
-  }
-  ol, ul {
-  	margin: 2em 0;
-  	padding-left: 1em;
-  }
-
-
-
-  /* Nested HTML elements, and basic classes
-  ----------------------------------------------- */
-  ol li {
-  	list-style-type: decimal;
-  	margin-left: 2em;
-  }
-  ul li {
-  	margin-left: 2em;
-  	list-style-type: square;
-  }
-  td p {
-  	margin-top: 0;
-  }
-
-
-
-  /* Set the stage with main layout tweaks
-  ----------------------------------------------- */
-  #container {
-  	border: solid 7px #999;
-  	border-left: 0;
-  	border-right: 0;
-  	padding-top: 1px;
-  }
-  #header {
-  	color: #04172D;
-  	border-top: solid 3px #777;
-  	padding: 0;
-  	margin: 0 0 1.5em 0;
-  }
-  #main-content .wrapper {
-  	margin: 0;
-  }
-  .description {
-  	font: normal 1em "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
-  	color: #444;
-  	background: #C7C7C7;
-  	padding: 3px 25px 2.2em 25px;
-  	margin: 0;
-  	line-height: 1;
-  }
-  #footer {
-  	clear: both;
-  	color: #999;
-  	padding: 0 1em 1em 1em;
-  	border-bottom: solid 3px #777;
-  	margin-bottom: 1px;
-  }
-
-
-  /* Content area offset
-  ----------------------------------------------- */
-  #main-content .wrapper {
-  	padding: 0 25px;
-  }
-
-  #main-content td p {
-  	margin: 0 0 1em 0;
-  }
-
-
-
-  /* Custom font definitions
-  ----------------------------------------------- */
-  p {
-  	margin: 1em 0;
-  	line-height: 1.5;
-  }
-  h1,h2,h3,h4,h5,h6 {
-  	font-family: "Trebuchet MS", arial, sans-serif;
-  }
-  h1 {
-  	color: #B2B2B2;
-  	font-size: 2.4em;
-  	letter-spacing: 0.2em;
-  	font-weight: normal;
-  	padding: 1em 25px 0 25px;
-  }
-  h2 {
-  	margin: 0 0 0.5em 0;
-  	color: #777;
-  	font-size: 1.4em;
-  	font-weight: normal;
-  	border-bottom: double 3px #C7C7C7;
-  	padding: 0 0 0.4em 0;
-  }
-  h3 {
-  	font-size: 1.2em;
-  	background: #eee;
-  	border: dotted 1px #C7C7C7;
-  	padding: 0.2em;
-  }
-  h4 {
-  	font-size: 1.2em;
-  	padding: 0 0 0.2em 0;
-  	margin: 0.6em 0 0 0.4em;
-  	color: #777;
-  }
-  h5 {
-  	border-bottom: dotted 1px #C7C7C7;
-  }
-  h6 {
-  	color: #777;
-  	border-left: solid 1.2em #777;
-  	padding-left: 0.6em;
-  }
-
-  a:link {
-  	color: #9db2df;
-  }
-  a:hover {
-    	text-decoration: none;
-  	border-bottom: 1px dotted #bb242d;
-  	background-color: #e0e0e0;
-   }
-
-
-  /* Sidebar
-  ----------------------------------------------- */
-  #sidebar h3, #sidebar-alternate h3 {
-  	margin: 0;
-  	color: #777;
-  	background: none;
-  	font-size: 1.4em;
-  	font-weight: normal;
-  	border: none;
-  	padding: 0;
-  }
-
-  #sidebar blockquote, #sidebar blockquote p,
-  #sidebar-alternate blockquote, #sidebar-alternate blockquote p {
-  	margin-left: 0;
-  	margin-right: 0;
-  }
-  #sidebar blockquote {
-  	margin: 1em 0;
-  	padding: 0;
-  }
-  #adsense {
-  	text-align: center;
-  }
-
-
-
-  .editable {
-  	border: dashed 1px #c33;
-  }
-
-
-
-
-  /* Tweaks for Two-column Right layout
-  ----------------------------------------------- */
-  #twocolumn-right #sidebar .wrapper {
-  	margin: 0 10px;
-  }
-
-
-
-  /* Tweaks for Two-column Left layout
-  ----------------------------------------------- */
-  #twocolumn-left #sidebar .wrapper {
-  	margin: 0 10px;
-  }
-
-
-  /* Tweaks for Three-column layout
-  ----------------------------------------------- */
-  #threecolumn #sidebar .wrapper {
-  	margin: 0 10px;
-  }
-  #threecolumn #sidebar-alternate .wrapper {
-  	margin: 0 10px;
-  }
-  /*
-
-  	-- -- -- -- -- -- --
-  	COLOR SCHEME: Ghost
-  	-- -- -- -- -- -- --
-
-  */
-
-
-  /* Basic HTML style
-  ----------------------------------------------- */
-  a:link {
-  	color: #000;
-  }
-  a:visited {
-  	color: #333;
-  }
-  a:hover {
-  	color: #666;
-  }
-  body {
-  	color: #444;
-  	background: #fff;
-  }
-  caption {
-  	color: inherit;
-  	background: #eee;
-  }
-  hr {
-  	color: #eee;
-  	background: #eee;
-  	border-color: #eee;
-  }
-  table {
-  	border-color: #e6e6e6;
-  }
-  th {
-  	color: #444;
-  	background: #ccc;
-  }
-
-
-
-  /* Set the stage with main layout tweaks
-  ----------------------------------------------- */
-  #container {
-  	background-color: #fff;
-  	border-color: #fff;
-  }
-  #header {
-  	color: #888;
-  	border-top-color: #fff;
-  }
-  .description {
-  	color: #666;
-  	background: #e6e6e6;
-  }
-  #footer {
-  	color: #888;
-  	border-bottom-color: #fff;
-  }
-
-
-
-  /* Custom font definitions
-  ----------------------------------------------- */
-  h1 {
-  	color: #C7C7C7;
-  }
-  h2 {
-  	color: #888;
-  	border-bottom-color: #eee;
-  }
-  h3 {
-  	color: #666;
-  	background: #eee;
-  	border-color: #ddd;
-  }
-  h4 {
-  	border-bottom-color: #888;
-  	color: #444;
-  }
-  h5 {
-  	color: #888;
-  	border-bottom-color: #C7C7C7;
-  }
-  h6 {
-  	color: #ccc;
-  	border-left-color: #888;
-  }
-
-
-
-
-
-  /* Sidebar
-  ----------------------------------------------- */
-  #sidebar h3, #sidebar-alternate h3 {
-  	color: #888;
-  	background: none;
-  }
-
-  #sidebar a:link {
-  	color: #666;
-  }
-  #sidebar a:visited {
-  	color: #444;
-  }
-  #sidebar a:hover {
-  	color: #999;
-  }
-  /** END CUSTOM SKIN **/
   </style>
 
 <!-- Start of Google Analytics Code -->
@@ -564,30 +76,145 @@
 
   <div id="container">
     <div class="wrapper">
+      <h1 id="page-title"><div id='g_title'>About ELF Auxiliary Vectors</div></h1>
+      <p><i>"Mysterious carriers of information from kernelspace to userspace."</i></p>
       <div id="header">
-        <div class="wrapper">
-          <h1 id="page-title"><div id='g_title'>About ELF Auxiliary Vectors</div></h1>
-          <div style="clear: both;"></div>
-          <p class="description"><div id='g_description'><p>Mysterious carriers of information (from kernelspace to userspace)<br></p></div></p>
-          <div style="clear: both"></div>
-        </div>
+	<div id="author">By <a rel="author"
+	  href="https://plus.google.com/106265659371255351553?rel=author">Manu
+ Garg</a> (<a href="http://www.manugarg.com">www.manugarg.com</a>) | </div>
+	<div class="g-plusone" data-annotation="bubble" data-size="medium" data-width="300" data-href="http://articles.manugarg.com/aboutelfauxiliaryvectors.html"></div>
       </div>
       <!-- /editable --><!-- /wrapper --><!-- /header -->
       <div id="main-content">
         
         <div class="wrapper">
-          <div class="content-item "><div id='g_body'><p>A system&#39;s job is to run processes. These processes are created from the executable files on the system. These executables are stored in various formats e.g. a.out, ELF, COFF, Windows PE. When an executable is loaded in the system, a binary loader is called according to the binary format of that executable. For elf, that loader is defined in the file /usr/src/linux/fs/binfmt_elf.c.<br><br>This elf loader parses the elf file, maps the various program segments, sets up the entry point and initializes the process stack. We won&#39;t go into much details about the loading process here. We&#39;ll be talking about ELF auxiliary vectors. These vectors are the mechanism to transfer some OS specific information to the program interpreter (e.g. ld) and the process. How these vectors are passed on? Well, this task is done by the elf loader that we were talking about. <i>bimfmt_elf.c</i> puts these vectors on the process stack alongwith other information like argc, argv, envp. After stack initialization, stack looks something like this: </p><p><b><font face="courier new,monospace">position            content                     size (bytes) + comment<br>  ------------------------------------------------------------------------<br>  stack pointer -&gt;  [ argc = number of args ]     4<br>                    [ argv[0] (pointer) ]         4   (program name)<br>                    [ argv[1] (pointer) ]         4<br>                    [ argv[..] (pointer) ]        4 * x<br>                    [ argv[n - 1] (pointer) ]     4<br>                    [ argv[n] (pointer) ]         4   (= NULL)<br><br>                    [ envp[0] (pointer) ]         4<br>                    [ envp[1] (pointer) ]         4<br>                    [ envp[..] (pointer) ]        4<br>                    [ envp[term] (pointer) ]      4   (= NULL)<br><br>                    [ auxv[0] (Elf32_auxv_t) ]    8<br>                    [ auxv[1] (Elf32_auxv_t) ]    8<br>                    [ auxv[..] (Elf32_auxv_t) ]   8<br>                    [ auxv[term] (Elf32_auxv_t) ] 8   (= AT_NULL vector)<br><br>                    [ padding ]                   0 - 16<br><br>                    [ argument ASCIIZ strings ]   &gt;= 0<br>                    [ environment ASCIIZ str. ]   &gt;= 0<br><br>  (0xbffffffc)      [ end marker ]                4   (= NULL)<br><br>  (0xc0000000)      &lt; bottom of stack &gt;              0   (virtual)</font></b><br>  ------------------------------------------------------------------------</p><p> Elf loader puts an array(auxv) of ELF auxiliary vectors at the bottom of the stack. The structure of auxiliary vectors is defined in /usr/include/elf.h as:<br><br><b><font face="courier new,monospace">typedef struct<br>{<br>  uint32_t a_type;              /* Entry type */<br>  union<br>    {<br>      uint32_t a_val;           /* Integer value */<br>      /* We use to have pointer elements added here.  We cannot do that,<br>         though, since it does not work when using 32-bit definitions<br>         on 64-bit platforms and vice versa.  */<br>    } a_un;<br>} Elf32_auxv_t;</font></b><br><br> <i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i> are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p><p><b><font face="courier new,monospace">/* Legal values for a_type (entry type).  */<br>#define AT_NULL         0               /* End of vector */<br>#define AT_IGNORE       1               /* Entry should be ignored */<br>#define AT_EXECFD       2               /* File descriptor of program */<br>#define AT_PHDR         3               /* Program headers for program */<br>#define AT_PHENT        4               /* Size of program header entry */<br>#define AT_PHNUM        5               /* Number of program headers */<br>#define AT_PAGESZ       6               /* System page size */<br>#define AT_BASE         7               /* Base address of interpreter */<br>#define AT_FLAGS        8               /* Flags */<br>#define AT_ENTRY        9               /* Entry point of program */<br>#define AT_NOTELF       10              /* Program is not ELF */<br>#define AT_UID          11              /* Real uid */<br>#define AT_EUID         12              /* Effective uid */<br>#define AT_GID          13              /* Real gid */<br>#define AT_EGID         14              /* Effective gid */<br>#define AT_CLKTCK       17              /* Frequency of times() */<br>/* Pointer to the global system page used for system calls and other nice things.  */<br>#define AT_SYSINFO      32<br>#define AT_SYSINFO_EHDR 33</font></b><br></p><p>(Look at the file /usr/include/elf.h for complete list)<br><br>Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called AT_ elf parameters. <br><br></p><h4>Seeing ELF Auxiliary Vectors:</h4><p>ELF auxiliary vectors are mostly used by the program interpreter and hence are not discussed much by the programmers. The ELF auxiliary vectors being passed to a program can be seen by setting environment variable LD_SHOW_AUXV to 1.<br></p><p><b><font face="courier new,monospace">[root@localhost ~]# LD_SHOW_AUXV=1 /bin/true<br>AT_SYSINFO:      0x9ff400<br>AT_SYSINFO_EHDR: 0x9ff000<br>AT_HWCAP:    fpu vme de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pat clflush dts acpi mmx fxsr sse sse2 ss<br>AT_PAGESZ:       4096<br>AT_CLKTCK:       100<br>..........</font></b></p><p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. Following program snippet shows a way to find out the value of AT_SYSINFO parameter:<br><br><b><font face="courier new,monospace">#include &lt;stdio.h&gt;<br>#include &lt;elf.h&gt;<br><br>main(int argc, char* argv[], char* envp[])<br>{<br>        Elf32_auxv_t *auxv;<br>        while(*envp++ != NULL); /*from stack diagram above: *envp = NULL marks end of envp*/<br><br>        for (auxv = (Elf32_auxv_t *)envp; auxv-&gt;a_type != AT_NULL; auxv++)<br>      /* auxv-&gt;a_type = AT_NULL marks the end of auxv */<br>        {<br>                if( auxv-&gt;a_type == AT_SYSINFO)<br>                        printf(&quot;AT_SYSINFO is: 0x%x\n&quot;, auxv-&gt;a_un.a_val);<br>        }<br>}</font><br><br><font face="courier new,monospace">[root@localhost ~]# gcc -o ats ats.c<br>[root@localhost ~]# ./ats<br>AT_SYSINFO: 0xc24400</font><br></b><br>We can verify that our program is working properly by using LD_SHOW_AUXV environment variable:<b><br><font face="courier new,monospace">[root@localhost ~]# LD_SHOW_AUXV=1 ./ats | grep AT_SYSINFO<br>AT_SYSINFO:      0xdd9400<br>AT_SYSINFO_EHDR: 0xdd9000<br>AT_SYSINFO is: 0xdd9400</font></b></p><h4>The End:<br></h4><p>Well, that&#39;s all I had to say about Elf auxiliary vectors. I had to go in search of them because of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism in Linux 2.6&quot;</a>. </p><p>I would also like to mention that I have shamelessly copied the stack diagram from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p><p>cheers,<br>Manu<br>http://www.manugarg.com </p></div></div>
+          <p>A system&#39;s job is to run processes. These processes are created from the executable files on the system. These executables are stored in various formats e.g. a.out, ELF, COFF, Windows PE. When an executable is loaded in the system, a binary loader is called according to the binary format of that executable. For elf, that loader is defined in the file /usr/src/linux/fs/binfmt_elf.c.<br><br>This elf loader parses the elf file, maps the various program segments, sets up the entry point and initializes the process stack. We won&#39;t go into much details about the loading process here. We&#39;ll be talking about ELF auxiliary vectors. These vectors are the mechanism to transfer some OS specific information to the program interpreter (e.g. ld) and the process. How these vectors are passed on? Well, this task is done by the elf loader that we were talking about. <i>bimfmt_elf.c</i> puts these vectors on the process stack alongwith other information like argc, argv, envp. After stack initialization, stack looks something like this: </p>
+
+<pre>
+position            content                     size (bytes) + comment
+  ------------------------------------------------------------------------
+  stack pointer ->  [ argc = number of args ]     4
+                    [ argv[0] (pointer) ]         4   (program name)
+                    [ argv[1] (pointer) ]         4
+                    [ argv[..] (pointer) ]        4 * x
+                    [ argv[n - 1] (pointer) ]     4
+                    [ argv[n] (pointer) ]         4   (= NULL)
+
+                    [ envp[0] (pointer) ]         4
+                    [ envp[1] (pointer) ]         4
+                    [ envp[..] (pointer) ]        4
+                    [ envp[term] (pointer) ]      4   (= NULL)
+
+                    [ auxv[0] (Elf32_auxv_t) ]    8
+                    [ auxv[1] (Elf32_auxv_t) ]    8
+                    [ auxv[..] (Elf32_auxv_t) ]   8
+                    [ auxv[term] (Elf32_auxv_t) ] 8   (= AT_NULL vector)
+
+                    [ padding ]                   0 - 16
+
+                    [ argument ASCIIZ strings ]   >= 0
+                    [ environment ASCIIZ str. ]   >= 0
+
+  (0xbffffffc)      [ end marker ]                4   (= NULL)
+
+  (0xc0000000)      < bottom of stack >           0   (virtual)
+  ------------------------------------------------------------------------
+</pre>
+
+
+<p> Elf loader puts an array(auxv) of ELF auxiliary vectors at the bottom of the stack. The structure of auxiliary vectors is defined in /usr/include/elf.h as:
+
+<pre>
+typedef struct
+{
+  uint32_t a_type;              /* Entry type */
+  union
+    {
+      uint32_t a_val;           /* Integer value */
+      /* We use to have pointer elements added here.  We cannot do that,
+         though, since it does not work when using 32-bit definitions
+         on 64-bit platforms and vice versa.  */
+    } a_un;
+} Elf32_auxv_t;
+</pre>
+
+<i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i> are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p>
+
+<pre>
+/* Legal values for a_type (entry type).  */
+#define AT_NULL         0               /* End of vector */
+#define AT_IGNORE       1               /* Entry should be ignored */
+#define AT_EXECFD       2               /* File descriptor of program */
+#define AT_PHDR         3               /* Program headers for program */
+#define AT_PHENT        4               /* Size of program header entry */
+#define AT_PHNUM        5               /* Number of program headers */
+#define AT_PAGESZ       6               /* System page size */
+#define AT_BASE         7               /* Base address of interpreter */
+#define AT_FLAGS        8               /* Flags */
+#define AT_ENTRY        9               /* Entry point of program */
+#define AT_NOTELF       10              /* Program is not ELF */
+#define AT_UID          11              /* Real uid */
+#define AT_EUID         12              /* Effective uid */
+#define AT_GID          13              /* Real gid */
+#define AT_EGID         14              /* Effective gid */
+#define AT_CLKTCK       17              /* Frequency of times() */
+/* Pointer to the global system page used for system calls and other nice things.  */
+#define AT_SYSINFO      32
+#define AT_SYSINFO_EHDR 33
+</pre>
+
+<p>(Look at the file /usr/include/elf.h for complete list)<br><br>Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called AT_ elf parameters. <br><br></p>
+
+<h4>Spying On ELF Auxiliary Vectors:</h4><p>ELF auxiliary vectors are mostly used by the program interpreter and hence are not discussed much by the programmers. The ELF auxiliary vectors being passed to a program can be seen by setting environment variable LD_SHOW_AUXV to 1.<br></p>
+
+<pre>
+[root@localhost ~]# LD_SHOW_AUXV=1 /bin/true
+AT_SYSINFO:      0x9ff400
+AT_SYSINFO_EHDR: 0x9ff000
+AT_HWCAP:    fpu vme de pse tsc msr pae mce cx8 apic mtrr pge mca cmov pat clflush dts acpi mmx fxsr sse sse2 ss
+AT_PAGESZ:       4096
+AT_CLKTCK:       100
+..........
+</pre>
+
+<p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. Following program snippet shows a way to find out the value of AT_SYSINFO parameter:</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;elf.h&gt;
+
+main(int argc, char* argv[], char* envp[])
+{
+        Elf32_auxv_t *auxv;
+        while(*envp++ != NULL); /*from stack diagram above: *envp = NULL marks end of envp*/
+
+        for (auxv = (Elf32_auxv_t *)envp; auxv-&gt;a_type != AT_NULL; auxv++)
+      /* auxv-&gt;a_type = AT_NULL marks the end of auxv */
+        {
+                if( auxv-&gt;a_type == AT_SYSINFO)
+                        printf("AT_SYSINFO is: 0x%x\n", auxv-&gt;a_un.a_val);
+        }
+}
+
+[root@localhost ~]# gcc -o ats ats.c
+[root@localhost ~]# ./ats
+AT_SYSINFO: 0xc24400
+</pre>
+
+
+<br>We can verify that our program is working properly by using LD_SHOW_AUXV environment variable:
+
+<pre>
+[root@localhost ~]# LD_SHOW_AUXV=1 ./ats | grep AT_SYSINFO
+AT_SYSINFO:      0xdd9400
+AT_SYSINFO_EHDR: 0xdd9000
+AT_SYSINFO is: 0xdd9400
+</pre>
+
+<hr/>
+<p>Well, that&#39;s all I had to say about Elf auxiliary vectors. I had to go in search of them because of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism in Linux 2.6&quot;</a>. </p><p>I would also like to mention that I have shamelessly copied the stack diagram from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
+</div></div>
           <div style="clear: both"></div>
-          <hr>
-          <!-- Google Plus One Button. -->
-          <g:plusone size="medium"
-            href="http://articles.manugarg.com/aboutelfauxiliaryvectors.html">
-          </g:plusone>
-          <script type="text/javascript"
-            src="https://apis.google.com/js/plusone.js"></script>
-        </div>
-      </div>
-      <!-- /wrapper --><!-- /main-content -->
       <div id="footer"><div class="wrapper">
         <hr />
         <p><div id='g_footer'><p>Copyright 2006 <a rel="author"
@@ -596,13 +223,6 @@
         <div style="clear: both"></div>
       </div></div>
       <!-- /wrapper --><!-- /footer -->
-    </div>
-  </div>
-<!-- /wrapper --><!-- /container -->
-
-<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div>
-<div id="extraDiv3"><span></span></div><div id="extraDiv4"><span></span></div>
-<div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
 <script type="text/javascript">
   var sc_project=825718;
   var sc_invisible=0;
@@ -610,5 +230,16 @@
   var sc_security="ec98e57b";
 </script>
 <script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script><noscript><div class="statcounter"><a class="statcounter" href="http://www.statcounter.com/"><img class="statcounter" src="http://c7.statcounter.com/counter.php?sc_project=825718&amp;java=0&amp;security=ec98e57b&amp;invisible=0" alt="blog stats"></a></div></noscript>
+    </div>
+  </div>
+<!-- /wrapper --><!-- /container -->
+<!-- Google Plus One Button. -->
+<script type="text/javascript">
+(function() {
+  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+  po.src = 'https://apis.google.com/js/plusone.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+</script>
 </body>
 </html>

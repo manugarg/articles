@@ -7,6 +7,14 @@
       color: #444;
     }
 
+    .description {
+      color: #444;
+      background: #C7C7C7;
+      padding: 3px 25px 2.2em 25px;
+      margin: 0;
+      line-height: 1;
+    }
+
     p {
       margin: 1em 0;
       line-height: 1.5;
@@ -37,7 +45,8 @@
 
     #author {
       font-size: 95%;
-      font-weight: normal;	
+      float:left;
+      padding: 2px 12px 2px 0px;
     }
   
     #container {
@@ -75,14 +84,17 @@
   <div id="container">
     <div id="wrapper">
       <h1 id="page-title">Sysenter Based System Call Mechanism in Linux 2.6</h1>
-      <div id="author">By <a rel="author"
+
+      <div id="header">
+	<div id="author">By <a rel="author"
 	  href="https://plus.google.com/106265659371255351553?rel=author">Manu
- Garg</a> (<a href="http://www.manugarg.com">www.manugarg.com</a>)
+ Garg</a> (<a href="http://www.manugarg.com">www.manugarg.com</a>) | </div>
+	<div class="g-plusone" data-annotation="bubble" data-size="medium" data-width="300" data-href="http://articles.manugarg.com/systemcallinlinux2_6.html"></div>
       </div>
 
       <div id="main-content">
         <div class="wrapper">
-          <div class="content-item"><div id="g_body"><p>Starting with version 2.5, linux kernel introduced a new system call
+          <p>Starting with version 2.5, linux kernel introduced a new system call
 entry mechanism on Pentium II+ processors. Due to performance issues on
 Pentium IV processors with existing software interrupt method, an
 alternative system call entry mechanism was implemented using
@@ -337,23 +349,17 @@ This example is taken from <a
   target="_top">http://www.win.tue.nl/~aeb/linux/lk/lk-4.html</a> after little
 modification to make it work on my system.</p>
 
-<h2 class="title" style="clear:
+  <h2 class="title" style="clear:
   both;">6.&nbsp;References</h2><p>Here are some references that helped me
-understand this.</p><div class="orderedlist"><ol compact="compact"
+understand this.</p>
+  <div class="orderedlist"><ol compact="compact"
     type="1"><li><p><a
       href="aboutelfauxiliaryvectors.html" target="_top">About Elf auxiliary
-      vectors</a> By <a href="http://www.manugarg.com">Manu Garg</a></p></li><li><p><a href="http://www.trilithium.com/johan/2005/08/linux-gate/" target="_top">What is linux-gate.so.1?</a> By Johan Peterson</p></li><li><p><a href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html" target="_top">This Linux kernel: System Calls</a> By Andries Brouwer</p></li><li><p>Understanding the Linux Kernel, By Daniel P. Bovet, Marco Cesati</p></li><li><p>Linux Kernel source code&nbsp;&nbsp;</p></li></ol></div></div></div>
-          <div style="clear: both;"></div>
-          <hr>
-          <!-- Google Plus One Button. -->
-          <g:plusone size="medium"
-            href="http://articles.manugarg.com/systemcallinlinux2_6.html">
-          </g:plusone>
-          <script type="text/javascript"
-            src="https://apis.google.com/js/plusone.js"></script>
-        </div>
-      </div>
+      vectors</a> By <a href="http://www.manugarg.com">Manu Garg</a></p></li><li><p><a href="http://www.trilithium.com/johan/2005/08/linux-gate/" target="_top">What is linux-gate.so.1?</a> By Johan Peterson</p></li><li><p><a href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html" target="_top">This Linux kernel: System Calls</a> By Andries Brouwer</p></li><li><p>Understanding the Linux Kernel, By Daniel P. Bovet, Marco Cesati</p></li><li><p>Linux Kernel source code&nbsp;&nbsp;</p></li></ol></div>
+
+      </div></div>
       <!-- /wrapper --><!-- /main-content -->
+      <div style="clear: both;"></div>
       <div id="footer"><div class="wrapper">
         <hr>
         <p></p><div id="g_footer"><p>Copyright 2006 <a rel="author"
@@ -362,14 +368,7 @@ understand this.</p><div class="orderedlist"><ol compact="compact"
         <div style="clear: both;"></div>
       </div></div>
       <!-- /wrapper --><!-- /footer -->
-    </div>
-  </div>
-<!-- /wrapper --><!-- /container -->
 
-<div id="extraDiv1"><span></span></div><div id="extraDiv2"><span></span></div>
-<div id="extraDiv3"><span></span></div><div id="extraDiv4"><span></span></div>
-<div id="extraDiv5"><span></span></div><div id="extraDiv6"><span></span></div>
-<!-- Start of StatCounter Code -->
 <script type="text/javascript">
   var sc_project=825718; 
   var sc_invisible=0; 
@@ -384,4 +383,17 @@ understand this.</p><div class="orderedlist"><ol compact="compact"
       src="http://c7.statcounter.com/counter.php?sc_project=825718&java=0&security=ec98e57b&invisible=0"
       alt="blog stats" /></a></div></noscript>
 <!-- End of StatCounter Code -->
+
+    </div>
+  </div>
+<!-- /wrapper --><!-- /container -->
+
+<!-- Google Plus One Button. -->
+<script type="text/javascript">
+(function() {
+  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+  po.src = 'https://apis.google.com/js/plusone.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+</script>
 </body></html>
