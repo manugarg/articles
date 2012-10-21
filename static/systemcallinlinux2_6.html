@@ -24,8 +24,8 @@
     }
 
     pre {
-      font-family: monospace;
-      font-size: 120%;
+      font-family: courier new;
+      font-weight: bold;
       background-color: #FAFAFA;
     }
 
@@ -163,12 +163,10 @@ SYSENTER_EIP_MSR  176h
 <h3 class="title">4.2.&nbsp;How does linux 2.6 uses these instructions?</h3><div class="orderedlist"><ol type="1"><li><p>Linux sets up these registers during initialization itself.</p>
 
 <pre>
-<code>
 /usr/src/linux/arch/i386/kernel/sysenter.c:
      36         wrmsr(MSR_IA32_SYSENTER_CS, __KERNEL_CS, 0);
      37         wrmsr(MSR_IA32_SYSENTER_ESP, tss-&gt;esp1, 0);
      38         wrmsr(MSR_IA32_SYSENTER_EIP, (unsigned long) sysenter_entry, 0);
-</code>
 </pre>
 
 <p>Please
