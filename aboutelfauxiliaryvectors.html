@@ -104,8 +104,8 @@
           <p>
           ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
           An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call
-          </a> entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known after
-          kernel has started.
+          </a> entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known
+          after kernel has finished up loading.
           </p><p> 
           The information is passed on to the user processes by binary loaders which are part of the kernel
           subsystem itself; either built-in the kernel or a kernel module. Binary loaders convert a binary file,
@@ -116,7 +116,7 @@
           /usr/src/linux/fs/binfmt_elf.c</a>. 
           </p><p>
           The ELF loader parses the ELF file, maps the various program segments in the memory, sets up the entry
-          point and initializes the process stack. <i>bimfmt_elf.c</i> puts ELF auxiliary vectors on the process
+          point and initializes the process stack. It puts ELF auxiliary vectors on the process
           stack along with other information like argc, argv, envp. After initialization, a process' stack looks
           something like this:
           </p>
