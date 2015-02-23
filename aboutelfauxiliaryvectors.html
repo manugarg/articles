@@ -88,7 +88,25 @@
       <div id="main-content">
         
         <div class="wrapper">
-          <p>A system&#39;s job is to run processes. These processes are created from the executable files on the system. These executables are stored in various formats e.g. a.out, ELF, COFF, Windows PE. When an executable is loaded in the system, a binary loader is called according to the binary format of that executable. For elf, that loader is defined in the file /usr/src/linux/fs/binfmt_elf.c.<br><br>This elf loader parses the elf file, maps the various program segments, sets up the entry point and initializes the process stack. We won&#39;t go into much details about the loading process here. We&#39;ll be talking about ELF auxiliary vectors. These vectors are the mechanism to transfer some OS specific information to the program interpreter (e.g. ld) and the process. How these vectors are passed on? Well, this task is done by the elf loader that we were talking about. <i>bimfmt_elf.c</i> puts these vectors on the process stack alongwith other information like argc, argv, envp. After stack initialization, stack looks something like this: </p>
+          <p>
+          ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
+          An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call</a>
+          entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known after kernel
+          has started.
+          
+          This information is passed to the user process by executable loader which is part of the kernel subsystem.
+          Executable loaders are what convert an executable file, a program, into a process on the system. Usually
+          there is a different loader for each executable file format; thankfully there are not many executable
+          file formats - most of the linux based systems now use ELF binaries. ELF binary loader is
+          defined in the following file <a href="https://github.com/torvalds/linux/blob/master/fs/binfmt_elf.c">
+          /usr/src/linux/fs/binfmt_elf.c</a>. 
+          <br>
+          <br>
+          This elf loader parses the ELF file, maps the various program segments in the memory, sets up the entry
+          point and initializes the process stack. <i>bimfmt_elf.c</i> puts ELF auxiliary vectors on the process
+          stack along with other information like argc, argv, envp. After stack initialization, stack looks
+          something like this:
+          </p>
 
 <pre>
 position            content                     size (bytes) + comment
