@@ -101,9 +101,9 @@ of this similarity in coming sections.
 <p>
 As always we have a system call to do the job for us :) 
 <pre>
-	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-	//socket(2) prototype: socket(int domain, int type, int protocol)
+//socket(2) prototype: socket(int domain, int type, int protocol)
 </pre>
 <p>
 What it says is - give me a socket of domain INET (AF_INET is for 
@@ -137,8 +137,8 @@ a specific port as in case of a server, you need to do get it through
 'bind(2)' system call:
 </p>
 <pre>
-	int bind(int sockfd, struct sockaddr *my_addr, socklen_t
-							addrlen);
+int bind(int sockfd, struct sockaddr *my_addr,
+         socklen_t addrlen);
 </pre>
 <p>					
 "sockaddr" structure has fields like socket family (AF_INET), IP address
@@ -179,14 +179,14 @@ and if you want initiate the connection (e.g. you are client and want
 something done from server), you do an 'active open'.
 </p>
 
-<h2>3.1 PASSIVE OPEN:</h2>
+<h3>3.1 PASSIVE OPEN:</h3>
 <p>
 If you are doing passive open, you are waiting for the connection.
 Waiting for a connection is also called 'listening'. Your server starts
 listening when it executes:
 </p>
 <pre>
-	listen(backlog);
+listen(backlog);
 </pre>
 <p>
 "The 'listen' function converts an unconnected socket into a passive
@@ -229,8 +229,8 @@ Connections, if any, are still with the TCP. To return a connection to
 the application
 </p>
 <pre>
-	int new_sock = accept(int orig_sock, struct sockaddr* addr, 
-   					socklen_t *addrlen);
+int new_sock = accept(int orig_sock, struct sockaddr* addr, 
+		      socklen_t *addrlen);
 </pre>
 <p>
 'accept' is called by an application to return the next completed
@@ -270,8 +270,8 @@ When you initiate a connection, you are doing an 'active open'. You just
 need to call 'connect(2)' to initiate a connection.
 </p>
 <pre>
-	int connect(int sockfd, const struct sockaddr *serv_addr,
-						socklen_t addrlen);
+int connect(int sockfd, const struct sockaddr *serv_addr,
+	    socklen_t addrlen);
 </pre>
 <p>
 This initiates the process of connection (3-way handshake in TCP
