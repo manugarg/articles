@@ -159,7 +159,7 @@ typedef struct
 </pre>
 
 <i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i>
-are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p>
+are defined in <i>elf.h</i>. To give you an idea, here are some of the vectors:<br></p>
 
 <pre>
 /* Legal values for a_type (entry type).  */
@@ -184,7 +184,11 @@ are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p>
 #define AT_SYSINFO_EHDR 33
 </pre>
 
-<p>(Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called AT_ elf parameters.)</p>
+<p>The whole list is defined in the header files: <a href="https://github.com/torvalds/linux/blob/v3.19/include/uapi/linux/auxvec.h">
+/usr/include/linux/auxvec.h</a> and <a href="https://github.com/torvalds/linux/blob/v3.19/arch/ia64/include/uapi/asm/auxvec.h">asm/auxvec.h</a>.
+(Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called
+AT_ elf parameters.)</p>
+
 Example of adding AT_SYSINFO auxiliary vector:
 <pre>
 <a href="https://github.com/torvalds/linux/blob/v3.19/arch/ia64/include/asm/elf.h#L215">arch/ia64/include/asm/elf.h:
@@ -253,7 +257,10 @@ AT_SYSINFO is: 0xdd9400
 </pre>
 
 <hr/>
-<p>Well, that&#39;s all I had to say about Elf auxiliary vectors. I had to go in search of them because of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism in Linux 2.6&quot;</a>. </p><p>I would also like to mention that I have shamelessly copied the stack diagram from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
+<p>Well, that&#39;s all I had to say about Elf auxiliary vectors. I had to go in search of them because
+of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism
+in Linux 2.6&quot;</a>. </p>
+<p>Credit: Stack diagram has been taken from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
 </div></div>
           <div style="clear: both"></div>
       <div id="footer"><div class="wrapper">
