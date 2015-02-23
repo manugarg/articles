@@ -131,14 +131,14 @@ with each push to the stack.</li>
 
 <pre>
 
-		 _______________ &lt;---- Bottom of the stack (fixed)
-		|		|	Higher memory address
-		|		|
-		|		|	
-		|_______________|&lt;---- Top of the stack (moving down)
-			|		Lower memory address
-			|
-			V Grows downwards in memory
+                 ________________ &lt;---- Bottom of the stack (fixed)
+                |                |        Higher memory address
+                |                |
+                |                |        
+                |________________|&lt;---- Top of the stack (moving down)
+                        |                Lower memory address
+                        |
+                        V Grows downwards in memory
 </pre>
 
 <li> Top of stack (pointer to the last pushed vlaue) is stored in the
@@ -237,29 +237,29 @@ int main()
 <h4>Corresponding Assembly Code (Only relevant part shown):</h4>
 <pre>
 a:
-        .long   8		&lt;-- Static variable a
+        .long   8                 &lt;-- Static variable a
 
 func1:
-	pushl   %ebp		&lt;-- Step 3, Push EBP
-	movl    %esp, %ebp	&lt;-- Step 4, Copy ESP -> EBP
-	subl    $4, %esp	&lt;-- Step 5, Create space on stack for t
-	movl    $8, -4(%ebp)	&lt;-- Initialize "t" to 8
-	movl    -4(%ebp), %eax	&lt;-- Step 6, Copy "t" to EAX
-	addl    8(%ebp), %eax	&lt;-- Step 6, Add "c" to EAX
-    	leave			&lt;-- Step 7 and 8:
-				7: Restore ESP (EBP -> ESP)
-				8: Restore EBP (Pop STACK -> EBP)
-	ret			&lt;-- Step 9, (Pop STACK -> Program Counter)
+        pushl   %ebp              &lt;-- Step 3, Push EBP
+        movl    %esp, %ebp        &lt;-- Step 4, Copy ESP -> EBP
+        subl    $4, %esp          &lt;-- Step 5, Create space on stack for t
+        movl    $8, -4(%ebp)      &lt;-- Initialize "t" to 8
+        movl    -4(%ebp), %eax    &lt;-- Step 6, Copy "t" to EAX
+        addl    8(%ebp), %eax     &lt;-- Step 6, Add "c" to EAX
+            leave                 &lt;-- Step 7 and 8:
+                                7: Restore ESP (EBP -> ESP)
+                                8: Restore EBP (Pop STACK -> EBP)
+        ret                       &lt;-- Step 9, (Pop STACK -> Program Counter)
 
 main:
-	.........
-	pushl   a		&lt;-- Step 1, push parameters
-	call    func1		&lt;-- Step 2, call func1
-	addl    $16, %esp
-	movl    %eax, -4(%ebp)
-	movl    -4(%ebp), %eax
-	movl    %eax, c
-	.........
+        .........
+        pushl   a                 &lt;-- Step 1, push parameters
+        call    func1             &lt;-- Step 2, call func1
+        addl    $16, %esp
+        movl    %eax, -4(%ebp)
+        movl    -4(%ebp), %eax
+        movl    %eax, c
+        .........
 </pre>
 
 <p>During execution of func1, STACK looks like:</p>
