@@ -90,15 +90,16 @@
         <div class="wrapper">
           <p>
           ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
-          An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call</a>
-          entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known after kernel
-          has started.
+          An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call
+          </a> entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known after
+          kernel has started.
           </p><p> 
           The information is passed on to the user processes by binary loaders which are part of the kernel
           subsystem itself; either built-in the kernel or a kernel module. Binary loaders convert a binary file,
           a program, into a process on the system. Usually there is a different loader for each binary
-          format; thankfully there are not many binary formats - most of the linux based systems now use ELF binaries.
-          ELF binary loader isndefined in the following file <a href="https://github.com/torvalds/linux/blob/master/fs/binfmt_elf.c">
+          format; thankfully there are not many binary formats - most of the linux based systems now use ELF
+          binaries.
+          ELF binary loader is defined in the following file <a href="https://github.com/torvalds/linux/blob/master/fs/binfmt_elf.c">
           /usr/src/linux/fs/binfmt_elf.c</a>. 
           </p><p>
           The ELF loader parses the ELF file, maps the various program segments in the memory, sets up the entry
@@ -139,7 +140,9 @@ position            content                     size (bytes) + comment
 </pre>
 
 
-<p> Elf loader puts an array(auxv) of ELF auxiliary vectors at the bottom of the stack. The structure of auxiliary vectors is defined in /usr/include/elf.h as:
+<p> ELF loader puts an array (auxv) of ELF auxiliary vectors at the bottom of the stack.
+
+The structure of an auxiliary vector is defined in /usr/include/elf.h as:
 
 <pre>
 typedef struct
@@ -155,7 +158,8 @@ typedef struct
 } Elf32_auxv_t;
 </pre>
 
-<i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i> are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p>
+<i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i>
+are defined in <i>elf.h</i>. For fedora 5, some of them are:<br></p>
 
 <pre>
 /* Legal values for a_type (entry type).  */
@@ -180,7 +184,27 @@ typedef struct
 #define AT_SYSINFO_EHDR 33
 </pre>
 
-<p>(Look at the file /usr/include/elf.h for complete list)<br><br>Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called AT_ elf parameters. <br><br></p>
+<p>(Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called AT_ elf parameters.)</p>
+Example of adding AT_SYSINFO auxiliary vector:
+<pre>
+<a href="https://github.com/torvalds/linux/blob/v3.19/arch/ia64/include/asm/elf.h#L215">arch/ia64/include/asm/elf.h:
+</a>
+#define ARCH_DLINFO								\
+do {										\
+	extern char __kernel_syscall_via_epc[];					\
+	NEW_AUX_ENT(AT_SYSINFO, (unsigned long) __kernel_syscall_via_epc);	\
+	NEW_AUX_ENT(AT_SYSINFO_EHDR, (unsigned long) GATE_EHDR);		\
+} while (0)
+
+<a href="https://github.com/torvalds/linux/blob/v3.19/fs/binfmt_elf.c#L218">fs/binfmt_elf.c:</a>
+
+#define NEW_AUX_ENT(id, val) \
+	do { \
+		elf_info[ei_index++] = id; \
+		elf_info[ei_index++] = val; \
+	} while (0)
+</pre>
+<br>
 
 <h4>Spying On ELF Auxiliary Vectors:</h4><p>ELF auxiliary vectors are mostly used by the program interpreter and hence are not discussed much by the programmers. The ELF auxiliary vectors being passed to a program can be seen by setting environment variable LD_SHOW_AUXV to 1.<br></p>
 
@@ -260,3 +284,4 @@ AT_SYSINFO is: 0xdd9400
 </script>
 </body>
 </html>
+
