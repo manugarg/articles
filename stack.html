@@ -5,8 +5,12 @@
   <style type="text/css">
 
     body {
-      font: 76% Verdana, sans-serif;
+      font: 80% Verdana, sans-serif;
       color: #444;
+    }
+
+    code {
+      font-size: 120%;
     }
 
     .description {
@@ -33,9 +37,14 @@
       border-bottom-style: double;
     }
 
+    li {
+      margin: 10px 0;
+    }
+
     pre {
       font-family: courier new;
       font-weight: bold;
+      font-size: 70%;
       background-color: #FAFAFA;
     }
 
@@ -80,33 +89,42 @@ Garg</a> (<a href="http://www.manugarg.com">www.manugarg.com</a>) | </div>
       <div class="g-plusone" data-annotation="bubble" data-size="medium" data-width="300" data-href="http://articles.manugarg.com/stack.html"></div>
     </div>
     <h1>&nbsp;</h1>
-<pre>
+<p>
 When you call a function in C, you need to ensure mainly 5 things:
 
-1. Store the returning address somewhere, so that we can continue
+<ol>
+<li> Store the returning address somewhere, so that we can continue
 executing the current function after completion of called function.
-
-2. Saving other information about current function. (Later, we'll see
+</li>
+<li>
+Saving other information about current function. (Later, we'll see
 that it boils down to saving current frame pointer (EBP) somewhere.)
-
-3. Providing the callee with the parameters. 
-
-4. Providing called function some space to store its automatic variables. 
-
-5. Providing some mechanism to get return value from the called
+</li>
+<li>
+Providing the callee with the parameters. 
+</li>
+<li>
+Providing called function some space to store its automatic variables. 
+</li>
+<li>
+Providing some mechanism to get return value from the called
 function. It's implemented using EAX register. Called function stores
 return calue in EAX.
+</li>
+</ol>
+</p>
 
-				STACK
-				======
+<h2>Stack</h2>
 
 In C, first 4 features are implemented using stack. 
 
-Salient Features of Stack:
---------------------------
+<h3>Salient Features of Stack:</h3>
 
-1. It grows downwards in memory. That is the top of the stack moves down
-with each push to the stack.
+<ol>
+<li>It grows downwards in memory. That is the top of the stack moves down
+with each push to the stack.</li>
+
+<pre style="font-size: 100%">
 
 		 _______________ &lt;---- Bottom of the stack (fixed)
 		|		|	Higher memory address
@@ -116,79 +134,84 @@ with each push to the stack.
 			|		Lower memory address
 			|
 			V Grows downwards in memory
-2. Top of stack (pointer to the last pushed vlaue) is stored in the
-register ESP
+</pre>
 
-3. Only operations allowed are push and pop.
+<li> Top of stack (pointer to the last pushed vlaue) is stored in the
+register ESP.</li>
 
-Thus, **ESP alone represents the current status of the stack.
+<li>Only operations allowed are push and pop.</li>
+</ol>
+<p>Thus, **ESP alone represents the current status of the stack.</p>
 
-FUNCTION EXECUTION:
-==================
+<h2>Function Execution:</h2>
 
-By convention, procedures will take their parameters from stack. If a
+<p>By convention, procedures will take their parameters from stack. If a
 procedure returns a value that will fit in a register, it will be
 returned in AL, AX, EAX, depending on its size. A procedure will in
-general have local variables on stack as well. 
+general have local variables on stack as well. </p>
 
-A standard method of accessing both local variables and parameters is to
+<p>A standard method of accessing both local variables and parameters is to
 "mark" a place on the stack, and then address both parameters and local
 variables by their offsets from the "mark". This mark or reference point
 is called "FRAME POINTER" , because all the information that is pushed
 into the stack at the time of procedure call is called a frame for that
-procedure.
+procedure.</p>
 
-Frame Pointer (FP) for the running procedure is always stored in EBP.
+<p>Frame Pointer (FP) for the running procedure is always stored in EBP.</p>
 
 
-EXECUTION IN STEPS:
-===================
+<h2>Execution in steps</h2>
+<ol>
+<li>Push the parameters in the reverse order (right to left).</li>
 
-1. Push the parameters in the reverse order (right to left).
-
-2. "Call" function now. It implicitly pushes the return address into STACK.
-[[ call func ]]
+<li>"Call" function now. It implicitly pushes the return address into STACK.<br>
+<code>[[ call func ]]</code>
+</li>
 ------ Now enters the called procedure ------
 
-3. Push the current EBP ie. Frame Pointer (FP) of calling function into
+<li>Push the current EBP ie. Frame Pointer (FP) of calling function into
 stack. We need to do this to continue with the execution of calling
-function after return from the called function.  
-[[ pushl %ebp ]]
-
-4. Copy the ESP to EBP. (yes, this location will be new FRAME POINTER)
-[[ movl %esp, %ebp ]]
-
-5. Allocate space on stack for local variables. It's done by
-decrementing ESP.
-[[ subl $4, %esp ]]
-
+function after return from the called function.<br>
+<code>[[ pushl %ebp ]]</code>
+</li>
+<li>Copy the ESP to EBP. (yes, this location will be new FRAME POINTER)<br>
+<code>[[ movl %esp, %ebp ]]</code>
+</li>
+<li>Allocate space on stack for local variables. It's done by
+decrementing ESP.<br>
+<code>[[ subl $4, %esp ]]</code>
+<br>
 ------ Do some processing ------
-
-6. Put the value to be returned in EAX.
-
+<br>
+</li>
+<li>Put the value to be returned in EAX.
+<br>
 ----- Start unwinding STACK ------
+</li>
+<li>Copy current EBP to ESP, it will reduce stack's size.  Now we have
+old FP at the top of the stack.<br>
+<code>[[ movl %ebp, %esp]]</code>
+</li>
 
-7. Copy current EBP to ESP, it will reduce stack's size.  Now we have
-old FP at the top of the stack.  
-[[ movl %ebp, %esp]]
+<li>Pop a 32 bit value (which is old frame pointer) and stuff it into
+EBP. (undoing Step 3)<br>
+<code>[[ popl %ebp ]]</code>
+</li>
 
-8. Pop a 32 bit value (which is old frame pointer) and stuff it into
-EBP. (undoing Step 3)
-[[ popl %ebp ]]
-
-9. The "ret" instruction pops a 32 bit value from the stack and stuffs
-into the program counter.
-[[ ret ]]
+<li>
+The "ret" instruction pops a 32 bit value from the stack and stuffs
+into the program counter.<br>
+<code>[[ ret ]]<code>
+</li>
 
 ** steps 7 and 8 are combined in single instruction "leave".
+</ol>
 
 
-
-				ILLUSTRATION
-				=============
-Example C Code:
---------------
-
+<h2>Illustration</h2>
+				
+<h4>Example C Code</h4>
+<pre>
 static int a = 8; 	/*Static Storage*/
 extern c;
 
@@ -205,10 +228,9 @@ int main()
 	c = b;
 	return(0);
 }
-
-Corresponding Assembly Code (Only relevant part shown):
-------------------------------------------------------
-
+</pre>
+<h4>Corresponding Assembly Code (Only relevant part shown):</h4>
+<pre>
 a:
         .long   8		&lt;-- Static variable a
 
@@ -233,32 +255,34 @@ main:
 	movl    -4(%ebp), %eax
 	movl    %eax, c
 	.........
+</pre>
 
-During execution of func1, STACK looks like:
-
-		 ______________	 &lt;---- Bottom of the stack (fixed)
-		|		|
-		|     main	|
-		|_______________|
-func1 frame -->	|	a	|&lt;---- Parameters pushed
-starts here	|_______________|
-		|    RET Addr	|&lt;---- Return address pushed by "call"
-		|_______________|
-Frame Pointer-->|      EBP	|&lt;---- FP for main pushed by func1
-for func1	|_______________|	Copy ESP to EBP
-		|	t	|&lt;---- Local variable "t"
-		|_______________|
-			|
-			V
-
+<p>During execution of func1, STACK looks like:</p>
+<pre>
+                 _______________ &lt;---- Bottom of the stack (fixed)
+                |               |
+                |     main      |
+                |_______________|
+func1 frame --> |        a      |&lt;---- Parameters pushed
+starts here     |_______________|
+                |    RET Addr   |&lt;---- Return address pushed by "call"
+                |_______________|
+Frame Pointer-->|      EBP      |&lt;---- FP for main pushed by func1
+for func1       |_______________|        Copy ESP to EBP
+                |        t      |&lt;---- Local variable "t"
+                |_______________|
+                        |
+                        V
+</pre>
+<p>
 From the figure, you can make out that , to refer to parameters, we have
 to add 8 offset to EBP ie. 8(%ebp). And to refer to local variable,
 we'll say -4(%ebp).
-
+</p>
+<p>
 **Remember, ESP points to the last item pushed, so 0(%ebp) will give us
 FP of main.
-
-</pre>
+</p>
       <hr>
       <div id="g_footer">Copyright 2006 <a rel="author"
 	href="https://plus.google.com/106265659371255351553?rel=author">Manu Garg+</a>.</div>
