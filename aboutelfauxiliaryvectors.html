@@ -117,7 +117,7 @@
           </p><p>
           The ELF loader parses the ELF file, maps the various program segments in the memory, sets up the entry
           point and initializes the process stack. <i>bimfmt_elf.c</i> puts ELF auxiliary vectors on the process
-          stack along with other information like argc, argv, envp. After stack initialization, stack looks
+          stack along with other information like argc, argv, envp. After initialization, a process' stack looks
           something like this:
           </p>
 
