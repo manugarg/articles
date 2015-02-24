@@ -1,0 +1,6 @@
+<div style="position: relative">
+{% include sharing-providers/googleplus %}
+{% include sharing-providers/twitter %}
+{% include sharing-providers/linkedin %}
+</div>
+

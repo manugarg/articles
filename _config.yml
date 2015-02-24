@@ -1,0 +1,26 @@
+author:
+  name: Manu Garg
+  email: manugarg@gmail.com
+  github: manugarg
+  twitter: manugarg
+
+url: http://articles.manugarg.com
+
+sharing :
+  provider: googleplus
+  twitter:
+    size:
+    via:
+    count:
+  facebook:
+    appid:
+    layout: button_count
+    font:
+    faces: false
+    width: 90
+  googleplus:
+    size: medium
+    width:
+    annotation: bubble
+  linkedin:
+    counter: right

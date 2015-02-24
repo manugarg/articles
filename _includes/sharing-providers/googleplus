@@ -1,0 +1,11 @@
+<div style="float: left; width: 70px">
+  <div class="g-plusone" data-size="{{ site.sharing.googleplus.size }}" data-annotation="{{ site.sharing.googleplus.annotation }}" data-width="{{ site.sharing.googleplus.width }}" data-href="{{ site.url }}{{ page.url }}"></div>
+</div>
+
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
