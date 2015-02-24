@@ -4,98 +4,28 @@ sharing: true
 url: /backup_rsync.html
 ---
 <html><head>
-      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>{{ page.title }}</title>
+  {% include header.html %}
+  {% include css.html %}
+  {% include google-analytics.html %} 
 <style>
-body { 
-    background: #FFFFFF;
-    font: normal 80%/150% verdana;
-}
-
-table { 
-    font: normal 80%/150% verdana; 
-}
-
 h1, h2, h3, h4, h5 { 
     color: #111180; 
     font-family: sans-serif; 
     margin: 30 0 20 0
 }
-
-span.term { 
-    font-weight: bold; 
-}
-
-div.sidebar { 
-    background: #dddddd; 
-    border: 1px solid gray; 
-    padding: 10px; 
-    margin: 20px; 
-}
-
-    pre {
-      font-size: 120%;
-      font-weight: bold;
-      background-color: #FAFAFA;
-      display: block;
-      width: auto;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      white-space: pre;
-      word-wrap: normal;
-    }    
-
-    #author {
-      font-size: 95%;
-      float:left;
-      padding: 2px 12px 2px 0px;
-    }
-  
-    #container {
-      width: 718px;
-      text-align: left;
-      margin: 0 auto;
-    }
-
-    #main-content {
-      padding-top: 10px;
-    }
-
-    @media screen and (max-width: 480px) {
-    	#container {
-    	  width: 100%;
-    	}
-    }
 </style>
-<meta name="generator" content="DocBook XSL Stylesheets V1.68.1">
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-79661-7']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 </head>
 
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <div class="article" lang="en">
   <div class="titlepage">
     <h1 id="page-title">Backing up Windows machines using rsync and ssh</h1>
-    <div id="header">
-	<div id="author" style="margin-bottom: 10px">By <a rel="author"
-	  href="https://google.com/+ManuGarg?rel=author">Manu
- Garg</a>&nbsp;&nbsp;(<a href="http://www.manugarg.com">www.manugarg.com</a>) | </div>
-      {% include sharing %}
-    </div>
+    {% include sharing.html %}
   </div>
-<div id="main-content" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e4"></a>Economical backup solution: rsync and ssh</h2></div></div></div><p>As all other unix tricks this is also the result of laziness and the need. I wanted to backup data on my windows laptop to a central linux/unix server. I didn't want all the features of available expensive backup solutions. Just a simple updated copy of my data on a central machine which is backed up to the tape daily. rsync is known for fast incremental transfer and was an obvious choice for the purpose.</p><p>We have a unix machine at our workplace which has a directory structure /backup/username allocated for backing up user data. rsync has a client/server architecture, where rsync client talks to an rsync daemon at the server side (This statement may not be completely true. I am not sure and don't care also. You can refer to rsync manpage for complete discussion over rsync.). rsync client can connect to rsync server directly or through other remote transport programs like rsh, ssh etc. I decided to use ssh for transport for security and simplicity.</p><p>rsync daemon requires a configuration file rsyncd.conf. For my use, I have set it up like this:</p><pre>[manu@amusbocldmon01 ~]$ cat rsyncd.conf
+  <div id="main-content" lang="en">
+  <div class="titlepage"><div><div>
+  <h2 class="title" style="clear: both"><a name="d0e4"></a>Economical backup solution: rsync and ssh</h2></div></div></div><p>As all other unix tricks this is also the result of laziness and the need. I wanted to backup data on my windows laptop to a central linux/unix server. I didn't want all the features of available expensive backup solutions. Just a simple updated copy of my data on a central machine which is backed up to the tape daily. rsync is known for fast incremental transfer and was an obvious choice for the purpose.</p><p>We have a unix machine at our workplace which has a directory structure /backup/username allocated for backing up user data. rsync has a client/server architecture, where rsync client talks to an rsync daemon at the server side (This statement may not be completely true. I am not sure and don't care also. You can refer to rsync manpage for complete discussion over rsync.). rsync client can connect to rsync server directly or through other remote transport programs like rsh, ssh etc. I decided to use ssh for transport for security and simplicity.</p><p>rsync daemon requires a configuration file rsyncd.conf. For my use, I have set it up like this:</p>
+<pre>[manu@amusbocldmon01 ~]$ cat rsyncd.conf
 use chroot = no
 [backup]
         path = /backup
@@ -135,15 +65,4 @@ requirement.</p></div><div class="section" lang="en"><div
 <div class="literallayout">
   <a href="https://google.com/+ManuGarg?rel=author">Manu Garg+</a>&nbsp;&nbsp;<a href="http://www.manugarg.com" target="_top">(www.manugarg.com)</a></p></div></div></div>
 
-
-<!-- Google Plus One Button. -->
-<script type="text/javascript">
-(function() {
-  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-  po.src = 'https://apis.google.com/js/plusone.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-})();
-</script>
 </body></html>
-
-

@@ -4,108 +4,21 @@ sharing: true
 url: /aboutelfauxiliaryvectors.html
 ---
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
+<html prefix="og: http://ogp.me/ns#">
 <head>
-  <title>{{ page.title }}</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style type="text/css">
-    body {
-      font: 76% Verdana, sans-serif;
-      color: #444;
-    }
-
-    p {
-      margin: 1em 0;
-      line-height: 1.5;
-    }
-    
-    h1 {
-      font-size: 2.0em;
-      letter-spacing: 0.1em;
-    }
-  
-    h2 {
-      border-bottom-color: #eee;
-      border-bottom-width: 3px;
-      border-bottom-style: double;
-    }
-
-    pre {
-      font-size: 120%;
-      font-weight: bold;
-      background-color: #FAFAFA;
-      display: block;
-      width: auto;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      white-space: pre;
-      word-wrap: normal;
-    }    
-
-    blockquote {
-      margin: 1em 2em;
-      font-style: italic;
-      font-size: 95%;
-    }
-
-    #author {
-      font-size: 95%;
-      float:left;
-      padding: 2px 12px 2px 0px;
-    }
-  
-    #container {
-      width: 718px;
-      text-align: left;
-      margin: 0 auto;
-    }
-
-    #main-content {
-      padding-top: 22px;
-    }
-    
-    @media screen and (max-width: 480px) {
-    	#container {
-    	  width: 100%;
-    	}
-    }
-
-  </style>
-
-<!-- Start of Google Analytics Code -->
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-79661-7']);
-  _gaq.push(['_setDomainName', '.manugarg.com']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-  })();
-</script>
-<!-- End of Google Analytics Code -->
+  {% include header.html %}
+  {% include css.html %}
+  {% include google-analytics.html %} 
 </head>
 
 <body id="onecolumn">
 
   <div id="container">
-    <div class="wrapper">
-      <h1 id="page-title"><div id='g_title'>About ELF Auxiliary Vectors</div></h1>
+      <h1 id="page-title">About ELF Auxiliary Vectors</h1>
       <p><i>"Mysterious carriers of information from kernelspace to userspace."</i></p>
-      <div id="header">
-	<div id="author" style="margin-bottom: 10px">By <a rel="author"
-	  href="https://google.com/+ManuGarg?rel=author">Manu
- Garg</a>&nbsp;&nbsp;(<a href="http://www.manugarg.com">www.manugarg.com</a>) | </div>
-      {% include sharing %}
-      </div>
-      <!-- /editable --><!-- /wrapper --><!-- /header -->
-      <div id="main-content">
-        
-        <div class="wrapper">
+      {% include sharing.html %}
+
+      <div id="main-content">        
           <p>
           ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
           An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call
@@ -279,34 +192,12 @@ AT_SYSINFO is: 0xdd9400
 of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism
 in Linux 2.6&quot;</a>. </p>
 <p>Credit: Stack diagram has been taken from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
-</div></div>
-          <div style="clear: both"></div>
-      <div id="footer"><div class="wrapper">
-        <hr />
-        <p><div id='g_footer'><p>Copyright 2006 <a rel="author"
-            href="https://google.com/+ManuGarg?rel=author">Manu
- Garg+</a>.<br></p></div>
-        <div style="clear: both"></div>
-      </div></div>
-      <!-- /wrapper --><!-- /footer -->
-<script type="text/javascript">
-  var sc_project=825718;
-  var sc_invisible=0;
-  var sc_partition=6;
-  var sc_security="ec98e57b";
-</script>
-<script type="text/javascript" src="http://www.statcounter.com/counter/counter_xhtml.js"></script><noscript><div class="statcounter"><a class="statcounter" href="http://www.statcounter.com/"><img class="statcounter" src="http://c7.statcounter.com/counter.php?sc_project=825718&amp;java=0&amp;security=ec98e57b&amp;invisible=0" alt="blog stats"></a></div></noscript>
-    </div>
+      </div>
+      <!-- /main-content -->
+    {% include footer.html %}
   </div>
-<!-- /wrapper --><!-- /container -->
-<!-- Google Plus One Button. -->
-<script type="text/javascript">
-(function() {
-  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-  po.src = 'https://apis.google.com/js/plusone.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-})();
-</script>
+  <!-- /container -->
+
 </body>
 </html>
 
