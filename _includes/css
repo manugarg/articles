@@ -48,7 +48,6 @@
   }
 
   #author {
-    font-size: 95%;
     float:left;
     padding: 2px 12px 2px 0px;
   }
