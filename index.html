@@ -1,11 +1,17 @@
+---
+title: Manu's Public Articles and Projects
+desc: Manu's Public Articles and Projects
+sharing: true
+url: /index.html
+---
 <!DOCTYPE html>
 <html>
 
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Articles : Manu's public articles">
+    {% include header.html %}
 
     <title>Articles</title>
     <style type="text/css">
@@ -21,19 +27,14 @@
   </head>
 
   <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <h2 id="project_tagline">Manu's public articles and projects</h2>
-        </header>
-    </div>
+          <h2 id="project_tagline">Manu's public articles and projects</h1>
+{% include sharing.html %}
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-
-<p>Articles</p>
+<br/>
+<h3>Articles</h3>
 
 <ul>
 <li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a></li>
@@ -47,7 +48,8 @@
 <li><a href="stack.html">Procedure Call Sequence in C</a></li>
 </ul>
 
-<p>Projects</p>
+<br/>
+<h3>Projects</h3>
 
 <ul>
 <li><a href="https://github.com/pacparser/pacparser">Pacparser - a library to parse proxy auto-configs</a></li>
