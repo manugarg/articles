@@ -37,24 +37,47 @@ url: /index.html
 <h3>Articles</h3>
 
 <ul>
-<li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a></li>
-<li><a href="aboutelfauxiliaryvectors.html">About ELF Auxiliary Vectors</a></li>
-<li>
-<a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a>
-</li>
-<li><a href="backup_rsync.html">Backing up Windows machines using rsync and ssh</a></li>
-<li><a href="ssh_tunneling.pdf">Defeating Firewalls : Sneaking Into Office Computers From Home (pdf)</a></li>
-<li><a href="socket.html">Mighty Sockets</a></li>
-<li><a href="stack.html">Procedure Call Sequence in C</a></li>
+  <li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a>
+  <p>Starting with version 2.5, linux kernel introduced a new system call entry mechanism on Pentium II+ processors. Due to performance issues on Pentium IV processors with existing software interrupt method, an alternative system call entry mechanism was implemented using SYSENTER/SYSEXIT instructions available on Pentium II+ processors. This article explores this new mechanism.</p>
+  </li>
+  <li><a href="aboutelfauxiliaryvectors.html">About ELF Auxiliary Vectors</a>
+    <p>ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes. This articles discusses these mysterious carriers of information.</p>
+  </li>
+  <li>
+    <a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a>
+    <p>How to employ ARP spoofing to sniff in a switched network. A presentation.</p>
+  </li>
+  <li><a href="backup_rsync.html">Backing up Windows machines using rsync and ssh</a>
+    <p>A cheap and easy backup setup for Windows machines.</p>
+  </li>
+  <li><a href="ssh_tunneling.pdf">Defeating Firewalls : Sneaking Into Office Computers From Home (pdf)</a>
+    <p>This article shows how firewalls can be defeated through some simple techniques.</p>
+  </li>
+  <li><a href="socket.html">Mighty Sockets</a>
+    <p>One of my earliest articles. Explains sockets and gives a mental model to understand what they really represent.</p>
+  </li>
+  <li><a href="stack.html">Procedure Call Sequence in C</a>
+    <p>What happens when a C function is executed. Explains the use of call stack among other things.
+  </li>
 </ul>
 
 <br/>
 <h3>Projects</h3>
 
 <ul>
-<li><a href="https://github.com/pacparser/pacparser">Pacparser - a library to parse proxy auto-configs</a></li>
-<li><a href="http://code.google.com/p/pactester">Pactester - a tool to test proxy auto-configs</a></li>
-<li><a href="http://sourceforge.net/projects/pymailer/">A simple GUI based mailer</a></li>
+  <li>
+    <a href="https://chrome.google.com/webstore/detail/page-notes/omjdheidbhoghpfdnndkgoelfiogjfla">Page Notes - A Chrome Extension</a>
+    <p>A chrome extension that make web easy and more powerful. Ever needed to note down something about a webpage e.g. login id, password/password hints, frequent flyer number, store card etc. Something that you want to remember when you visit that page again. Add page notes to chrome and remember nothing, not even where and how to look for the information. Page notes does all the remembering for you.</p>
+  </li>
+  <li><a href="https://github.com/pacparser/pacparser">Pacparser - a library to parse proxy auto-configs</a>
+    <p>pacparser is a C and python library to parse proxy auto-config (PAC) files. It comes with pactester, a tool to test PAC files.</p>
+  </li>
+  <li><a href="http://github.com/manugarg/pactester">Pactester - a tool to test proxy auto-configs</a>
+    <p>Perl-based tool to test PAC file. (Not maintained anymore. Replaced by pactester that comes with pacparser.) </p>
+  </li>
+  <li><a href="http://sourceforge.net/projects/pymailer/">Pymailer - a simple GUI based mailer</a>
+    <p>One of my earliest open source project: a simple GUI based mailer. Not maintained anymore and most likely looks ugly now.</p>
+  </li>
 </ul>
 
       </section>
