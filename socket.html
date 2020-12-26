@@ -226,17 +226,18 @@ demultiplexing next, which is handled by the TCP-IP stack.
 
 <h2>5. DEMULTIPLEXING:</h2>
 <p>
-Ok, so now you have a connection. Now client sends some data to server,
-say a request for a web page in case of web client. How does it reach
-the server? Packet carries the information like source address (ip and
-port) and destination address.  IP does all the work to make the packet
-reach destination machine using dst IP address. 
+Ok, so now you have a connection, and client is beginning to sends some
+data to the server, say a request for a web page in case of a web client.
+How does this data reach the server? Packets carry the information like
+source address (ip and port) and destination address.  IP layer does all
+the work to make the packet reach the destination machine, using the "dst"
+IP address. 
 </p><p>
 But now what, we have 2 sockets on the server with the same name ie.
 with same ports (remember one socket listening and other connected to
-the client). And there can be many more sockets with the same name
-depending upon the number of clients connected at a time. Here comes TCP
-to rescue. TCP demultiplexes incoming segments for us. 
+the client). There can be many more sockets with the same name
+depending upon the number of clients connected at a time. Here comes the
+TCP layer to rescue. TCP demultiplexes incoming segments for us. 
 </p><p>
 TCP cannot demulitplex incoming segments by looking at just the
 destination port number. TCP must look at all 4 elements in the socket
@@ -267,8 +268,8 @@ pair to determine which endpoint receives the arriving segment.
 In figure 3, we have 2 connections open between server machine and client
 machine. It's a case of concurrent servers (most typical way to handle
 clients). In this case, when a new connection arrives, server forks out
-and lets his child handle the connection and himself keeps listening for
-new connections.
+and lets its child handle the connection and while it itself keeps listening
+for new connections.
 </p><p>
 Here we have 3 sockets with the same local port (1200). If a segment
 arrives from 3.209.127.100 port 1500 destined for port 1200, it is
