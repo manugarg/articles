@@ -100,9 +100,9 @@ to be complete.
                 |               |
 </pre>
 <p>
-There are 2 possible ways to establish a connection: Whether you want to
-initiate the connection or wait for the connection. If you choose to
-wait for a connection (e.g.  you are a server), you do a 'passive open'
+There are 2 possible ways to establish a connection: Either you initiate
+the connection or wait for a connection. If you choose to wait for a
+connection (e.g.  you are a server), you do a 'passive open'
 and if you want to initiate the connection (e.g. you are client and want
 something done from server), you do an 'active open'
 </p>
@@ -126,12 +126,12 @@ For a given listening socket kernel maintains 2 queues:
 <ol>
 	<li>An 'incomplete conneciton queue', which contains an entry for all
 unacknowledged connections. Basically, I have received the SYN from the
-other machine, sent the [SYN, ACK] and waiting for ACK from other side.
-These sockets are in SYN_RCVD state.
+other machine, sent the [SYN, ACK] and waiting for an ACK from other side.
+These sockets are in the SYN_RCVD state.
 </li>
 <li>A 'completed connection queue', which contains an entry for each
-machine with whom the TCP three-way handshake is completed. These
-sockets are in ESTABLISHED state.
+machine with whom the TCP three-way handshake has been completed. These
+sockets are in the ESTABLISHED state.
 </li>
 </ol>
 
@@ -153,8 +153,8 @@ has been established yet.
 
 <h3>Fetching Connections:</h3>
 <p>
-Connections, if any, are still with the TCP. To return a connection to
-the application
+Connections, if any, are still within the TCP stack. To return a
+connection to the application
 </p>
 <pre>
 int new_sock = accept(int orig_sock, struct sockaddr* addr, 
@@ -169,10 +169,10 @@ completed connection queue is empty the process is put to sleep
 If 'accept' is successful, its return value is a brand new descriptor
 that was automatically created by kernel. This new descriptor refers to
 the TCP connection with the client. Listening socket remains untouched.
-Client socket address and length information is filled by accept. Server
-may or may not use them. 
+Client socket address and length information is filled by the "accept"
+call. Server may or may not use them. 
 </p><p>
-So you have 2 sockets now, one listening and other already connected.
+So you have 2 sockets now, one listening and other one already connected.
 You may close orig_sock, if you have no use for it now (eg. don't want
 to continue listening).  
 </p>
@@ -207,9 +207,9 @@ teminology) and returns only when connection is complete (or something
 goes wrong with your luck like signals and all). If not able to
 establish connection, it returns -1 and sets errno.
 </p><p>
-When you call connect, kernel implicitly allocates a port to the socket
-(naming of socket).  Fig. 2 has a client connected to the server. Port
-1500 is allocated to the client implicitly by kernel.
+When you call connect, the kernel implicitly allocates a port to the
+socket (naming of socket).  Fig. 2 has a client connected to the server.
+Port 1500 has been allocated to the client implicitly by the kernel.
 </p>
 
 <h2>4. DATA TRANSFER:</h2>
@@ -220,8 +220,8 @@ Now next obvious step will be to get some work done with this socket.
 Mechanism for sending and receiving data is actually very simple. You
 have to just read, write the socket descriptor like file descriptor.
 But, what happens behind the scenes is more important (like always ;)).
-A lot can be said by sockets. But, I'll just talk about packets 
-demultiplexing, which is handled by TCP-IP.
+A lot can be said about sockets, but I'll just talk about the packets 
+demultiplexing next, which is handled by the TCP-IP stack.
 </p>
 
 <h2>5. DEMULTIPLEXING:</h2>
