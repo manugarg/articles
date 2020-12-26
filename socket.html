@@ -51,7 +51,7 @@ Naming or addressing of a socket is very important. This is how data is
 How sockets are addressed depends upon the domain of the socket. For
 example, an INET domain socket is identified by an IP address and a port
 combined. Of course, an IP address is required if you want to reach a
-machine -- IP address is used by inernet protocol to route data from
+machine -- IP address is used by the inernet protocol to route data from
 one machine to another machine. Port is required by the kernel to route
 packets to the right process.  
 </p><p>
@@ -83,10 +83,11 @@ server, when we want a specific port for ourselves.
 <p>
 Connection establishment is required for all connection oriented
 protocols (like TCP).  In TCP terminology, a connection is established
-using three-way handshake. A  SYN packet is sent from one side
-(generally client) and when that packet arrives, receiving end
-(generally server) sends a [SYN,ACK] and connection is complete, when
-server receives ACK from client.  
+using a three-way handshake. A  SYN packet is sent from one side
+(generally client), and when that packet arrives at the receiving end
+(generally a server), that end sends a [SYN,ACK] to the client, and when
+server receives a final ACK from the client, connection is considered
+to be complete.  
 </p>
 <pre>
                 active          passive
@@ -102,8 +103,8 @@ server receives ACK from client.
 There are 2 possible ways to establish a connection: Whether you want to
 initiate the connection or wait for the connection. If you choose to
 wait for a connection (e.g.  you are a server), you do a 'passive open'
-and if you want initiate the connection (e.g. you are client and want
-something done from server), you do an 'active open'.
+and if you want to initiate the connection (e.g. you are client and want
+something done from server), you do an 'active open'
 </p>
 
 <h3>3.1 PASSIVE OPEN:</h3>
