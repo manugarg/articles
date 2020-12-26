@@ -44,38 +44,39 @@ address family, type and protocol.
 
 <h2>2. NAMING THE SOCKET</h2>
 <p>
-
 Naming or addressing of a socket is very important. This is how data is
- supposed to reach right process.
+ supposed to reach the right process.
 </p><p>
+
 How sockets are addressed depends upon the domain of the socket. For
-example, an INET domain socket is identified by ip address and port
-combined. Of course, IP address is required if you want to reach a
-machine. IP address is used by inernet protocol to route the data from
-one machine to other machine. Port is required by kernel to route the
-packet to the right process.  
+example, an INET domain socket is identified by an IP address and a port
+combined. Of course, an IP address is required if you want to reach a
+machine -- IP address is used by inernet protocol to route data from
+one machine to another machine. Port is required by the kernel to route
+packets to the right process.  
 </p><p>
-So as you see naming of a socket is important. But, you don't have to do
-this yourself always.  If a specific port number is not required by an
-application process (as is the case for most of the client), kernel may
- assign a port to the socket internally. However, if you are looking for 
-a specific port as in case of a server, you need to do get it through 
-'bind(2)' system call:
-</p>
+
+So as you can see, naming of a socket is important. But, you don't have
+to do this yourself always. If a specific port number is not required by an
+application process (as is the case for most of the client applications),
+the kernel may assign a port to the socket internally. However, if you are
+looking for a specific port, for example in case of a server, you need to
+register it through the 'bind(2)' system call:
+
 <pre>
 int bind(int sockfd, struct sockaddr *my_addr,
          socklen_t addrlen);
 </pre>
-<p>					
-"sockaddr" structure has fields like socket family (AF_INET), IP address
+
+	  "sockaddr" structure has fields like socket family (AF_INET), IP address
 (for IP) and Port. struct sockaddr is a generic structure. Generally we
-fill information in a more specific structure like sockaddr_in for
+fill information in a more specific structure, for example sockaddr_in for
 domain INET. 
 </p><p>
-This way we bind the socket to specific address, or in other way we give
-our socket a name. As mentioned earlier, this is required generally only in
-case of server, when we want a specific port for ourselves.
-</p>
+
+This way we bind the socket to a specific address, or in other words, we give
+it a name. As mentioned earlier, this is required generally only in case of
+server, when we want a specific port for ourselves.
 
 <h2>3. CONNECTION ESTABLISHMENT:</h2>
 
