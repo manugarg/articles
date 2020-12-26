@@ -21,7 +21,7 @@ url: /aboutelfauxiliaryvectors.html
           ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
           An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call
           </a> entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known
-          after kernel has finished up loading.
+          after kernel has finished loading.
           </p><p> 
           The information is passed on to the user processes by binary loaders which are part of the kernel
           subsystem itself; either built-in the kernel or a kernel module. Binary loaders convert a binary file,
@@ -151,7 +151,7 @@ AT_CLKTCK:       100
 ..........
 </pre>
 
-<p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. Following program snippet shows a way to find out the value of AT_SYSINFO parameter:</p>
+<p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. Following program snippet shows a way to find the value of the AT_SYSINFO parameter:</p>
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -160,12 +160,12 @@ AT_CLKTCK:       100
 main(int argc, char* argv[], char* envp[])
 {
         Elf32_auxv_t *auxv;
-        while(*envp++ != NULL); /*from stack diagram above: *envp = NULL marks end of envp*/
+        while (*envp++ != NULL); /* from stack diagram above: *envp = NULL marks end of envp */
 
         for (auxv = (Elf32_auxv_t *)envp; auxv-&gt;a_type != AT_NULL; auxv++)
-      /* auxv-&gt;a_type = AT_NULL marks the end of auxv */
+        /* auxv-&gt;a_type = AT_NULL marks the end of auxv */
         {
-                if( auxv-&gt;a_type == AT_SYSINFO)
+                if (auxv-&gt;a_type == AT_SYSINFO)
                         printf("AT_SYSINFO is: 0x%x\n", auxv-&gt;a_un.a_val);
         }
 }
@@ -176,7 +176,7 @@ AT_SYSINFO: 0xc24400
 </pre>
 
 
-<br>We can verify that our program is working properly by using LD_SHOW_AUXV environment variable:
+<br>We can verify that our program is working properly by using the LD_SHOW_AUXV environment variable:
 
 <pre>
 [root@localhost ~]# LD_SHOW_AUXV=1 ./ats | grep AT_SYSINFO
