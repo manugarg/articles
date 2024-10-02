@@ -4,102 +4,215 @@ desc: Manu's Public Articles and Projects
 sharing: true
 url: /index.html
 ---
+
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Articles : Manu's public articles">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Articles : Manu's public articles" />
     {% include header.html %}
 
-    <title>Manu's Articles and Projects</title>
+    <title>Manu Garg | Projects & Articles</title>
     <style type="text/css">
-    body {
-      font: 13px Verdana, sans-serif;
-      color:#373737;
-    }
-    
-    section a {
-      font: 14px "Lucida Grande", Verdana, sans-serif;
-      font-weight: 500;
-    }
-    
-    li {
-       margin-top: 10px;
-    }
+      body {
+        font-family: Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      header {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0;
+      }
+      main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      section {
+        margin-bottom: 40px;
+      }
+      h2 {
+        color: #333;
+        font-size: 1.5em;
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+      ul {
+        list-style-type: disc;
+      }
+      ul li {
+        margin-bottom: 10px;
+      }
+      a {
+        color: #007bff;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+      }
     </style>
   </head>
 
   <body>
-          <h1 id="project_tagline">Manu's public articles and projects</h1>
-{% include sharing.html %}
+    <header>
+      <h1>Manu Garg</h1>
+      <p>Projects & Articles</p>
+    </header>
+    {% include sharing.html %}
 
     <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-<br/>
-<h2>Creations / Projects</h2>
+    <main>
+      <section>
+        <h2>Creations / Projects</h2>
 
-<ul>
-  <li>
-    <a href="https://cloudprober.org">Cloudprober</a>
-    <p>Monitoring software to detect failures before your customers do.</p>
-  </li>
-  <li>
-    <a href="https://pagenotes.manugarg.com">Page Notes - A Chrome Extension</a>
-    <p>A chrome extension that make web easy and more powerful. Ever needed to note down something about a webpage e.g. login id, password/password hints, frequent flyer number, store card etc. Something that you want to remember when you visit that page again. Add page notes to chrome and remember nothing, not even where and how to look for the information. Page notes does all the remembering for you.</p>
-  </li>
-  <li><a href="https://github.com/manugarg/pacparser">Pacparser - a library to parse proxy auto-configs</a>
-    <p>pacparser is a C and python library to parse proxy auto-config (PAC) files. It comes with pactester, a tool to test PAC files.</p>
-  </li>
-  <li><a href="http://github.com/manugarg/pactester">Pactester - a tool to test proxy auto-configs</a>
-    <p>Perl-based tool to test PAC file. (Not maintained anymore. Replaced by pactester that comes with pacparser.) </p>
-  </li>
-  <li><a href="http://sourceforge.net/projects/pymailer/">Pymailer - a simple GUI based mailer</a> (<a href="https://github.com/manugarg/pymailer">Github</a>)
-    <p>One of my earliest open source project: a simple GUI based mailer. Not maintained anymore and most likely looks ugly now.</p>
-  </li>
-</ul>
-
-<br/>
-<h2>Articles</h2>
-
-<ul>
-  <li><a href="systemcallinlinux2_6.html">Sysenter Based System Call Mechanism in Linux 2.6</a>
-  <p>Starting with version 2.5, linux kernel introduced a new system call entry mechanism on Pentium II+ processors. Due to performance issues on Pentium IV processors with existing software interrupt method, an alternative system call entry mechanism was implemented using SYSENTER/SYSEXIT instructions available on Pentium II+ processors. This article explores this new mechanism.</p>
-  </li>
-  <li><a href="aboutelfauxiliaryvectors.html">About ELF Auxiliary Vectors</a>
-    <p>ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes. This articles discusses these mysterious carriers of information.</p>
-  </li>
-  <li>
-    <a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a>
-    <p>How to employ ARP spoofing to sniff in a switched network. A presentation.</p>
-  </li>
-  <li><a href="backup_rsync.html">Backing up Windows machines using rsync and ssh</a>
-    <p>A cheap and easy backup setup for Windows machines.</p>
-  </li>
-  <li><a href="ssh_tunneling.pdf">Defeating Firewalls : Sneaking Into Office Computers From Home (pdf)</a>
-    <p>This article shows how firewalls can be defeated through some simple techniques.</p>
-  </li>
-  <li><a href="socket.html">Mighty Sockets</a>
-    <p>One of my earliest articles. Explains sockets and gives a mental model to understand what they really represent.</p>
-  </li>
-  <li><a href="stack.html">Procedure Call Sequence in C</a>
-    <p>What happens when a C function is executed. Explains the use of call stack among other things.
-  </li>
-</ul>
+        <ul>
+          <li>
+            <a href="https://cloudprober.org">Cloudprober</a>
+            <p>
+              Monitoring software to detect failures before your customers do.
+            </p>
+          </li>
+          <li>
+            <a href="https://pagenotes.manugarg.com"
+              >Page Notes - A Chrome Extension</a
+            >
+            <p>
+              A chrome extension that make web easy and more powerful. Ever
+              needed to note down something about a webpage e.g. login id,
+              password/password hints, frequent flyer number, store card etc.
+              Something that you want to remember when you visit that page
+              again. Add page notes to chrome and remember nothing, not even
+              where and how to look for the information. Page notes does all the
+              remembering for you.
+            </p>
+          </li>
+          <li>
+            <a href="https://github.com/manugarg/pacparser"
+              >Pacparser - a library to parse proxy auto-configs</a
+            >
+            <p>
+              pacparser is a C and python library to parse proxy auto-config
+              (PAC) files. It comes with pactester, a tool to test PAC files.
+            </p>
+          </li>
+          <li>
+            <a href="http://github.com/manugarg/pactester"
+              >Pactester - a tool to test proxy auto-configs</a
+            >
+            <p>
+              Perl-based tool to test PAC file. (Not maintained anymore.
+              Replaced by pactester that comes with pacparser.)
+            </p>
+          </li>
+          <li>
+            <a href="http://sourceforge.net/projects/pymailer/"
+              >Pymailer - a simple GUI based mailer</a
+            >
+            (<a href="https://github.com/manugarg/pymailer">Github</a>)
+            <p>
+              One of my earliest open source project: a simple GUI based mailer.
+              Not maintained anymore and most likely looks ugly now.
+            </p>
+          </li>
+        </ul>
       </section>
-    </div>
 
-<hr>
+      <section>
+        <h2>Articles</h2>
+
+        <ul>
+          <li>
+            <a href="systemcallinlinux2_6.html"
+              >Sysenter Based System Call Mechanism in Linux 2.6</a
+            >
+            <p>
+              Starting with version 2.5, linux kernel introduced a new system
+              call entry mechanism on Pentium II+ processors. Due to performance
+              issues on Pentium IV processors with existing software interrupt
+              method, an alternative system call entry mechanism was implemented
+              using SYSENTER/SYSEXIT instructions available on Pentium II+
+              processors. This article explores this new mechanism.
+            </p>
+          </li>
+          <li>
+            <a href="aboutelfauxiliaryvectors.html"
+              >About ELF Auxiliary Vectors</a
+            >
+            <p>
+              ELF auxiliary vectors are a mechanism to transfer certain kernel
+              level information to the user processes. This articles discusses
+              these mysterious carriers of information.
+            </p>
+          </li>
+          <li>
+            <a href="arp_spoofing.pdf">Sniffing in a Switched Network (pdf)</a>
+            <p>
+              How to employ ARP spoofing to sniff in a switched network. A
+              presentation.
+            </p>
+          </li>
+          <li>
+            <a href="backup_rsync.html"
+              >Backing up Windows machines using rsync and ssh</a
+            >
+            <p>A cheap and easy backup setup for Windows machines.</p>
+          </li>
+          <li>
+            <a href="ssh_tunneling.pdf"
+              >Defeating Firewalls : Sneaking Into Office Computers From Home
+              (pdf)</a
+            >
+            <p>
+              This article shows how firewalls can be defeated through some
+              simple techniques.
+            </p>
+          </li>
+          <li>
+            <a href="socket.html">Mighty Sockets</a>
+            <p>
+              One of my earliest articles. Explains sockets and gives a mental
+              model to understand what they really represent.
+            </p>
+          </li>
+          <li>
+            <a href="stack.html">Procedure Call Sequence in C</a>
+            <p>
+              What happens when a C function is executed. Explains the use of
+              call stack among other things.
+            </p>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <hr />
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Articles written and maintained by <a href="https://www.linkedin.com/in/manugarg/?rel=author">Manu Garg</a> <a href="http://www.manugarg.com">(www.manugarg.com)</a></p>
+        <p class="copyright">
+          Articles written and maintained by
+          <a href="https://www.linkedin.com/in/manugarg/?rel=author"
+            >Manu Garg</a
+          >
+          <a href="https://github.com/manugarg">(www.manugarg.com)</a>
+        </p>
       </footer>
     </div>
-
-    
-
   </body>
 </html>
