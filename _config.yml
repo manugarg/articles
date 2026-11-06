@@ -24,3 +24,8 @@ sharing :
     annotation: bubble
   linkedin:
     counter: right
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
