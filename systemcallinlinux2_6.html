@@ -1,6 +1,6 @@
 ---
 title: Sysenter Based System Call Mechanism in Linux 2.6
-desc: How system call is implemented on Linux 2.6 and later versions
+desc: How system calls are implemented on Linux 2.6 and later versions
 sharing: true
 url: /systemcallinlinux2_6.html
 ---
@@ -14,54 +14,54 @@ url: /systemcallinlinux2_6.html
       <h1 id="page-title">Sysenter Based System Call Mechanism in Linux 2.6</h1>
       {% include sharing.html %}
       <div id="main-content">
-          <p>Starting with version 2.5, linux kernel introduced a new system call
+          <p>Starting with version 2.5, the Linux kernel introduced a new system call
 entry mechanism on Pentium II+ processors. Due to performance issues on
-Pentium IV processors with existing software interrupt method, an
+Pentium IV processors with the existing software interrupt method, an
 alternative system call entry mechanism was implemented using
 SYSENTER/SYSEXIT instructions available on Pentium II+ processors. This
-article explores this new mechanism. Discussion is limited to x86
-architecture and all source code listings are based on linux kernel
+article explores this new mechanism. The discussion is limited to the x86
+architecture, and all source code listings are based on Linux kernel
 2.6.15.6.</p>
 
 <h2 class="title" style="clear: both;">1. What are system calls?<br></h2><p>System calls provide userland processes a way to request services from
-the kernel. What kind of services? Services which are managed by
-operating system like storage, memory, network, process management etc.
-For example if a user process wants to read a file, it will have to
-make 'open' and 'read' system calls. Generally system calls are not
-called by processes directly. C library provides an interface to all
+the kernel. What kind of services? Services that are managed by the
+operating system, like storage, memory, network, process management etc.
+For example, if a user process wants to read a file, it will have to
+make 'open' and 'read' system calls. Generally, system calls are not
+called by processes directly. The C library provides an interface to all
 system calls.</p>
 
-<h2 class="title" style="clear: both;">2.&nbsp;What happens in a system call?&nbsp;</h2><p>A kernel code snippet is run on request of a user process. This code
+<h2 class="title" style="clear: both;">2.&nbsp;What happens in a system call?&nbsp;</h2><p>A kernel code snippet is run at the request of a user process. This code
 runs in ring 0 (with current privilege level -CPL- 0), which is the
-highest level of privilege in x86 architecture. All user processes run
-in ring 3 (CPL 3). So, to implement system call mechanism, what we need
+highest level of privilege in the x86 architecture. All user processes run
+in ring 3 (CPL 3). So, to implement the system call mechanism, what we need
 is 1) a way to call ring 0 code from ring 3 and 2) some kernel code to
 service the request.</p>
 
-<h2 class="title" style="clear: both;">3.&nbsp;Good old way of doing it</h2><p>Until some time back, linux used to
+<h2 class="title" style="clear: both;">3.&nbsp;Good old way of doing it</h2><p>Until some time back, Linux used to
 implement system calls on all x86 platforms using software interrupts.
-To execute a system call, user process will copy desired system call
-number to %eax and will execute 'int 0x80'. This will generate
-interrupt 0x80 and an interrupt service routine will be called. For
+To execute a system call, a user process copies the desired system call
+number to %eax and executes 'int 0x80'. This generates
+interrupt 0x80, and an interrupt service routine is called. For
 interrupt 0x80, this routine is an "all system calls handling" routine.
-This routine will execute in ring 0. This routine, as defined in the
-file <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code>, will save the current state and call appropriate system call handler based on the value in %eax.</p>
+This routine executes in ring 0. This routine, as defined in the
+file <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code>, saves the current state and calls the appropriate system call handler based on the value in %eax.</p>
 
 <h2 class="title" style="clear: both;">4.&nbsp;New shiny way of doing it</h2><p>It <a href="http://lkml.org/lkml/2002/12/9/13" target="_top">was found out</a>
 that this software interrupt method was much slower on Pentium IV
 processors. To solve this issue, Linus implemented an alternative
-system call mechanism to take advantage of SYSENTER/SYSEXIT
+system call mechanism to take advantage of the SYSENTER/SYSEXIT
 instructions provided by all Pentium II+ processors. Before going
 further with this new way of doing it, let's make ourselves more
 familiar with these instructions.</p>
 
-<h3 class="title">4.1.&nbsp;SYSENTER/SYSEXIT instructions:</h3><p>Let's look at the authorized source, Intel manual itself. Intel manual says:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+<h3 class="title">4.1.&nbsp;SYSENTER/SYSEXIT instructions:</h3><p>Let's look at the authoritative source, the Intel manual itself. The Intel manual says:</p><div class="blockquote"><blockquote class="blockquote"><p>The
 SYSENTER instruction is part of the "Fast System Call" facility
 introduced on the Pentium® II processor. The SYSENTER instruction is
 optimized to provide the maximum performance for transitions to
 protection ring 0 (CPL = 0). The SYSENTER instruction sets the
 following registers according to values specified by the operating
-system in certain model-specific registers.</p><div class="itemizedlist"><ul type="disc"><li><p>CS register set to the value of (SYSENTER_CS_MSR)</p></li><li><p>EIP register set to the value of (SYSENTER_EIP_MSR)</p></li><li><p>SS register set to the sum of (8 plus the value in SYSENTER_CS_MSR)</p></li><li><p>ESP register set to the value of (SYSENTER_ESP_MSR)</p></li></ul></div></blockquote></div><p>Looks like processor is trying to help us. Let's look at SYSEXIT also very quickly:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+system in certain model-specific registers.</p><div class="itemizedlist"><ul type="disc"><li><p>CS register set to the value of (SYSENTER_CS_MSR)</p></li><li><p>EIP register set to the value of (SYSENTER_EIP_MSR)</p></li><li><p>SS register set to the sum of (8 plus the value in SYSENTER_CS_MSR)</p></li><li><p>ESP register set to the value of (SYSENTER_ESP_MSR)</p></li></ul></div></blockquote></div><p>Looks like the processor is trying to help us. Let's also take a quick look at SYSEXIT:</p><div class="blockquote"><blockquote class="blockquote"><p>The
 SYSEXIT instruction is part of the "Fast System Call" facility
 introduced on the Pentium® II processor. The SYSEXIT instruction is
 optimized to provide the maximum performance for transitions to
@@ -73,8 +73,8 @@ purpose registers.</p>
 <div class="itemizedlist"><ul type="disc"><li><p>CS register set to the sum of (16 plus the value in SYSENTER_CS_MSR)</p></li><li><p>EIP register set to the value contained in the EDX register</p></li><li><p>SS register set to the sum of (24 plus the value in SYSENTER_CS_MSR)</p></li><li><p>ESP register set to the value contained in the ECX register</p></li></ul></div></blockquote></div>
 
 <br/>
-<p>SYSENTER_CS_MSR,SYSENTER_ESP_MSR, and SYSENTER_EIP_MSR are not really names of the
-registers. Intel just defines the address of these registers as:</p><div class="literallayout">
+<p>SYSENTER_CS_MSR, SYSENTER_ESP_MSR, and SYSENTER_EIP_MSR are not really the names of the
+registers. Intel just defines the addresses of these registers as:</p><div class="literallayout">
 <blockquote>
 <pre>
 SYSENTER_CS_MSR   174h
@@ -83,7 +83,7 @@ SYSENTER_EIP_MSR  176h
 </pre>
 </blockquote>
 
-<p> In linux these registers are named as:</p>
+<p>In Linux, these registers are named:</p>
 
 <pre>
 /usr/src/linux/include/asm/msr.h:
@@ -92,7 +92,7 @@ SYSENTER_EIP_MSR  176h
     103 #define MSR_IA32_SYSENTER_EIP           0x176
 </pre>
 
-<h3 class="title">4.2.&nbsp;How does linux 2.6 uses these instructions?</h3><div class="orderedlist"><ol type="1"><li><p>Linux sets up these registers during initialization itself.</p>
+<h3 class="title">4.2.&nbsp;How does Linux 2.6 use these instructions?</h3><div class="orderedlist"><ol type="1"><li><p>Linux sets up these registers during initialization.</p>
 
 <pre>
 /usr/src/linux/arch/i386/kernel/sysenter.c:
@@ -103,8 +103,8 @@ SYSENTER_EIP_MSR  176h
 
 <p>Please
 note that 'tss' refers to the Task State Segment (TSS) and tss-&gt;esp1
-thus points to the kernel mode stack. [4] explains the use of TSS in
-linux as:</p><div class="blockquote"><blockquote class="blockquote"><p>The
+thus points to the kernel mode stack. [4] explains the use of the TSS in
+Linux as:</p><div class="blockquote"><blockquote class="blockquote"><p>The
 x86 architecture includes a specific segment type called the Task State
 Segment (TSS), to store hardware contexts. Although Linux doesn't use
 hardware context switches, it is nonetheless forced to set up a TSS for
@@ -112,14 +112,14 @@ each distinct CPU in the system. This is done for two main reasons:</p><p>- When
 When a User Mode process attempts to access an I/O port by means of an
 in or out instruction, the CPU may need to access an I/O Permission
 Bitmap stored in the TSS to verify whether the process is allowed to
-address the port.</p></blockquote></div><p>So during initialization
-kernel sets up these registers such that after SYSENTER instruction,
-ESP is set to kernel mode stack and EIP is set to sysenter_entry.</p></li><li><p>Kernel
-also setups system call entry/exit points for user processes. Kernel
-creates a single page in the memory and attaches it to all processes'
+address the port.</p></blockquote></div><p>So, during initialization, the
+kernel sets up these registers such that after the SYSENTER instruction,
+ESP is set to the kernel mode stack and EIP is set to sysenter_entry.</p></li><li><p>The kernel
+also sets up system call entry/exit points for user processes. The kernel
+creates a single page in memory and attaches it to every process's
 address space when they are loaded into memory. This page contains the
 actual implementation of the system call entry/exit mechanism.
-Definition of this page can be found in the file <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code>. Kernel calls this page virtual dynamic shared object (vdso). Existence of this page can be confirmed by looking at <code class="filename">cat <code class="filename">/proc/`pid`/maps</code></code>:</p>
+The definition of this page can be found in the file <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code>. The kernel calls this page the virtual dynamic shared object (vdso). The existence of this page can be confirmed by looking at <code class="filename">/proc/`pid`/maps</code>:</p>
 
 <pre>
 slax ~ # cat /proc/self/maps
@@ -137,7 +137,7 @@ bffe7000-bfffd000 rwxp bffe7000 00:00 0          [stack]
 ffffe000-fffff000 ---p 00000000 00:00 0          [vdso]
 </pre>
 
-<p>For binaries using shared libraries, this page can be seen using ldd also:</p>
+<p>For binaries using shared libraries, this page can also be seen using ldd:</p>
 
 <pre>
 slax ~ # ldd /bin/ls
@@ -146,7 +146,7 @@ slax ~ # ldd /bin/ls
         ...
 </pre>
 
-<p>Observe linux-gate.so.1. This is no physical file. Content of this vdso can be seen as follows:</p>
+<p>Observe linux-gate.so.1. This is not a physical file. The content of this vdso can be seen as follows:</p>
 <pre>
 ==> dd if=/proc/self/mem of=linux-gate.dso bs=4096 skip=1048574 count=1
 1+0 records in
@@ -169,17 +169,17 @@ ffffe413:       c3                      ret
 </pre>
 
 <p>In all listings, ... stands for omitted irrelevant code.</p></li><li><p><span class="emphasis"><em>Initiation:</em></span>
-Userland processes (or C library on their behalf) call
-__kernel_vsyscall to execute system calls. Address of __kernel_vsyscall
-is not fixed. Kernel passes this address to userland processes using
-AT_SYSINFO elf parameter. AT_ elf parameters, a.k.a. elf auxiliary
+Userland processes (or the C library on their behalf) call
+__kernel_vsyscall to execute system calls. The address of __kernel_vsyscall
+is not fixed. The kernel passes this address to userland processes using
+the AT_SYSINFO ELF parameter. AT_ ELF parameters, a.k.a. ELF auxiliary
 vectors, are loaded on the process stack at the time of startup,
-alongwith the process arguments and the environment variables. Look at
-[1] for more information on Elf auxiliary vectors.</p><p>After moving
+along with the process arguments and the environment variables. Look at
+[1] for more information on ELF auxiliary vectors.</p><p>After moving
 to this address, registers %ecx, %edx and %ebp are saved on the user
 stack and %esp is copied to %ebp before executing sysenter. This %ebp
-later helps kernel in restoring userland stack back. After executing
-sysenter instruction, processor starts execution at <span class="emphasis"><em>sysenter_entry</em></span>. sysenter_entry is defined in <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code> as: (See my comments in [ ])</p>
+later helps the kernel restore the userland stack. After executing
+the sysenter instruction, the processor starts execution at <span class="emphasis"><em>sysenter_entry</em></span>. sysenter_entry is defined in <code class="filename">/usr/src/linux/arch/i386/kernel/entry.S</code> as: (See my comments in [ ])</p>
 <pre>
     179 ENTRY(sysenter_entry)
     180         movl TSS_sysenter_esp0(%esp),%esp
@@ -206,14 +206,14 @@ sysenter instruction, processor starts execution at <span class="emphasis"><em>s
     211         movl %eax,EAX(%esp)
 		......
 </pre>
-</li><li><p>Inside sysenter_entry: between line 183 and 202, kernel is saving the current state by pushing register values on to the stack.</p><p>Observe that $SYSENTER_RETURN is the userland return address as defined inside <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code> and %ebp contains userland ESP as %esp was copied to %ebp before calling sysenter.</p></li><li><p>After
-saving the state, kernel validates the system call number stored in
-%eax. Finally appropriate system call is called using instruction:</p>
+</li><li><p>Inside sysenter_entry: between lines 183 and 202, the kernel saves the current state by pushing register values on to the stack.</p><p>Observe that $SYSENTER_RETURN is the userland return address as defined inside <code class="filename">/usr/src/linux/arch/i386/kernel/vsyscall-sysenter.S</code> and %ebp contains the userland ESP, as %esp was copied to %ebp before calling sysenter.</p></li><li><p>After
+saving the state, the kernel validates the system call number stored in
+%eax. Finally, the appropriate system call is called using the instruction:</p>
 <pre>
     210 call *sys_call_table(,%eax,4)
 </pre>
 
-<p>This is very much similar to old way.</p></li><li><p>After system call is complete, processor resumes execution at line 211. Looking further in sysenter_entry definition:</p>
+<p>This is very similar to the old way.</p></li><li><p>After the system call is complete, the processor resumes execution at line 211. Looking further at the sysenter_entry definition:</p>
 <pre>
     210         call *sys_call_table(,%eax,4)
     211         movl %eax,EAX(%esp)
@@ -228,15 +228,15 @@ saving the state, kernel validates the system call number stored in
     220         sti
     221         sysexit
 </pre>
-</li><li><p>Copies
-value in %eax to stack. Userland ESP and return address (to-be EIP) are
-copied from kernel stack to %edx and %ecx respectively. Observe that
-the userland return address, $SYSENTER_RETURN was pushed on to stack in
-line 187. After that 0x28 bytes have been pushed on to the stack.
+</li><li><p>This copies the
+value in %eax to the stack. The return address (to-be EIP) and userland ESP are
+copied from the kernel stack to %edx and %ecx respectively. Observe that
+the userland return address, $SYSENTER_RETURN was pushed on to the stack in
+line 187. After that, 0x28 bytes have been pushed on to the stack.
 That's why 0x28(%esp) points to $SYSENTER_RETURN.</p></li><li><p>After
-that SYSEXIT instruction is executed. As we know from previous section,
+that, the SYSEXIT instruction is executed. As we know from the previous section,
 sysexit copies value in %edx to EIP and value in %ecx to ESP. sysexit
-transfers processor back to ring 3 and processor resumes execution in
+transfers the processor back to ring 3, and the processor resumes execution in
 userland.</p></li></ol></div>
 
 <h2 class="title" style="clear: both;">5.&nbsp;Some Code</h2>
@@ -248,7 +248,7 @@ int pid;
 int main() {
         __asm__(
                 "movl $20, %eax    \n"
-                "call *%gs:0x10    \n"   /* offset 0x10 is not fixed across the systems */
+                "call *%gs:0x10    \n"   /* offset 0x10 is not fixed across systems */
                 "movl %eax, pid    \n"
         );
         printf("pid is %d\n", pid);
@@ -257,16 +257,16 @@ int main() {
 </pre>
 <p>This
 does the getpid() system call (__NR_getpid is 20) using
-__kernel_vsyscall instead of int 0x80. Why %gs:0x10? Parsing process
-stack to find out AT_SYSINFO's value can be a cumbersome task. So, when
+__kernel_vsyscall instead of int 0x80. Why %gs:0x10? Parsing the process
+stack to find AT_SYSINFO's value can be a cumbersome task. So, when
 libc.so (C library) is loaded, it copies the value of AT_SYSINFO from
 the process stack to the TCB (Thread Control Block). Segment register
 %gs refers to the TCB. </p><p>Please note that the offset 0x10 is not
-fixed across the systems. I found it out for my system using GDB. A
-system independent way to find out AT_SYSINFO is given in [1]. </p><p>Note:
+fixed across systems. I found it for my system using GDB. A
+system-independent way to find out AT_SYSINFO is given in [1]. </p><p>Note:
 This example is taken from <a
   href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html"
-  target="_top">http://www.win.tue.nl/~aeb/linux/lk/lk-4.html</a> after little
+  target="_top">http://www.win.tue.nl/~aeb/linux/lk/lk-4.html</a> after a little
 modification to make it work on my system.</p>
 
   <h2 class="title" style="clear:
@@ -275,7 +275,7 @@ understand this.</p>
   <div class="orderedlist"><ol compact="compact"
     type="1"><li><p><a
       href="aboutelfauxiliaryvectors.html" target="_top">About Elf auxiliary
-      vectors</a> By <a href="http://www.manugarg.com">Manu Garg</a></p></li><li><p><a href="http://www.trilithium.com/johan/2005/08/linux-gate/" target="_top">What is linux-gate.so.1?</a> By Johan Peterson</p></li><li><p><a href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html" target="_top">This Linux kernel: System Calls</a> By Andries Brouwer</p></li><li><p>Understanding the Linux Kernel, By Daniel P. Bovet, Marco Cesati</p></li><li><p>Linux Kernel source code&nbsp;&nbsp;</p></li></ol></div>
+      vectors</a> By <a href="http://www.manugarg.com">Manu Garg</a></p></li><li><p><a href="http://www.trilithium.com/johan/2005/08/linux-gate/" target="_top">What is linux-gate.so.1?</a> By Johan Peterson</p></li><li><p><a href="http://www.win.tue.nl/%7Eaeb/linux/lk/lk-4.html" target="_top">The Linux kernel: System Calls</a> By Andries Brouwer</p></li><li><p>Understanding the Linux Kernel, By Daniel P. Bovet, Marco Cesati</p></li><li><p>Linux Kernel source code&nbsp;&nbsp;</p></li></ol></div>
 
       </div>
       <!-- /main-content -->
