@@ -19,19 +19,19 @@ url: /aboutelfauxiliaryvectors.html
       <div id="main-content">        
           <p>
           ELF auxiliary vectors are a mechanism to transfer certain kernel level information to the user processes.
-          An example of such an information is the pointer to the <a href="systemcallinlinux2_6.html">system call
+          An example of such information is the pointer to the <a href="systemcallinlinux2_6.html">system call
           </a> entry point in the memory (AT_SYSINFO); this information is dynamic in nature and is only known
-          after kernel has finished loading.
+          after the kernel has finished loading.
           </p><p> 
-          The information is passed on to the user processes by binary loaders which are part of the kernel
-          subsystem itself; either built-in the kernel or a kernel module. Binary loaders convert a binary file,
-          a program, into a process on the system. Usually there is a different loader for each binary
-          format; thankfully there are not many binary formats - most of the linux based systems now use ELF
+          The information is passed on to the user processes by binary loaders, which are part of the kernel
+          subsystem itself: either built into the kernel or loaded as a kernel module. Binary loaders convert a binary file,
+          a program, into a process on the system. Usually, there is a different loader for each binary
+          format; thankfully, there are not many binary formats - most Linux-based systems now use ELF
           binaries.
-          ELF binary loader is defined in the following file <a href="https://github.com/torvalds/linux/blob/master/fs/binfmt_elf.c">
+          The ELF binary loader is defined in the following file: <a href="https://github.com/torvalds/linux/blob/master/fs/binfmt_elf.c">
           /usr/src/linux/fs/binfmt_elf.c</a>. 
           </p><p>
-          The ELF loader parses the ELF file, maps the various program segments in the memory, sets up the entry
+          The ELF loader parses the ELF file, maps the various program segments into memory, sets up the entry
           point and initializes the process stack. It puts ELF auxiliary vectors on the process
           stack along with other information like argc, argv, envp. After initialization, a process' stack looks
           something like this:
@@ -69,7 +69,7 @@ position            content                     size (bytes) + comment
 </pre>
 
 
-<p> ELF loader puts an array (auxv) of ELF auxiliary vectors at the bottom of the stack.
+<p>The ELF loader puts an array (auxv) of ELF auxiliary vectors at the bottom of the stack.
 
 The structure of an auxiliary vector is defined in /usr/include/elf.h as:
 
@@ -87,7 +87,7 @@ typedef struct
 } Elf32_auxv_t;
 </pre>
 
-<i>a_type</i> defines the entry type and union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i>
+<i>a_type</i> defines the entry type and the union <i>a_un</i> defines the entry value. Legal values for <i>a_type</i>
 are defined in <i>elf.h</i>. To give you an idea, here are some of the vectors:<br></p>
 
 <pre>
@@ -116,9 +116,9 @@ are defined in <i>elf.h</i>. To give you an idea, here are some of the vectors:<
 <p>The whole list is defined in the header files: <a href="https://github.com/torvalds/linux/blob/v3.19/include/uapi/linux/auxvec.h">
 /usr/include/linux/auxvec.h</a> and <a href="https://github.com/torvalds/linux/blob/v3.19/arch/ia64/include/uapi/asm/auxvec.h">asm/auxvec.h</a>.
 (Since all entry types (a_type) start with AT_, ELF auxiliary vectors are also called
-AT_ elf parameters.)</p>
+AT_ ELF parameters.)</p>
 
-Example of adding AT_SYSINFO auxiliary vector:
+Here is an example of adding the AT_SYSINFO auxiliary vector:
 <pre>
 <a href="https://github.com/torvalds/linux/blob/v3.19/arch/ia64/include/asm/elf.h#L215">arch/ia64/include/asm/elf.h:
 </a>
@@ -139,7 +139,7 @@ do {										\
 </pre>
 <br>
 
-<h4>Spying On ELF Auxiliary Vectors:</h4><p>ELF auxiliary vectors are mostly used by the program interpreter and hence are not discussed much by the programmers. The ELF auxiliary vectors being passed to a program can be seen by setting environment variable LD_SHOW_AUXV to 1.<br></p>
+<h4>Spying On ELF Auxiliary Vectors:</h4><p>ELF auxiliary vectors are mostly used by the program interpreter and hence are not discussed much by programmers. The ELF auxiliary vectors being passed to a program can be seen by setting the environment variable LD_SHOW_AUXV to 1.<br></p>
 
 <pre>
 [root@localhost ~]# LD_SHOW_AUXV=1 /bin/true
@@ -151,7 +151,7 @@ AT_CLKTCK:       100
 ..........
 </pre>
 
-<p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. Following program snippet shows a way to find the value of the AT_SYSINFO parameter:</p>
+<p>Programmers can also access these parameters inside their programs by reaching out to the auxv array on the stack. The following program snippet shows a way to find the value of the AT_SYSINFO parameter:</p>
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -172,7 +172,7 @@ main(int argc, char* argv[], char* envp[])
 
 [root@localhost ~]# gcc -o ats ats.c
 [root@localhost ~]# ./ats
-AT_SYSINFO: 0xc24400
+AT_SYSINFO is: 0xc24400
 </pre>
 
 
@@ -186,10 +186,10 @@ AT_SYSINFO is: 0xdd9400
 </pre>
 
 <hr/>
-<p>Well, that&#39;s all I had to say about Elf auxiliary vectors. I had to go in search of them because
+<p>Well, that&#39;s all I had to say about ELF auxiliary vectors. I had to go in search of them because
 of my previous article on <a href="systemcallinlinux2_6.html">&quot;Sysenter Based System Call Mechanism
 in Linux 2.6&quot;</a>. </p>
-<p>Credit: Stack diagram has been taken from the phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
+<p>Credit: The stack diagram has been taken from the Phrack article http://www.phrack.org/phrack/58/p58-0x05 by grugq and scut.</p>
       </div>
       <!-- /main-content -->
     {% include footer.html %}
